@@ -1,0 +1,783 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>臺中市太平區衛生所 全方位業務 AI 導航員</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@3.19.0/tabler-icons.min.css">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --pk50:#FBEAF0;--pk100:#F4C0D1;--pk200:#ED93B1;
+  --pk400:#D4537E;--pk600:#993556;--pk800:#72243E;
+  --font-sans:-apple-system,BlinkMacSystemFont,'Segoe UI','Microsoft JhengHei','Noto Sans TC',sans-serif;
+  --border-radius-md:8px;--border-radius-lg:12px;
+  --color-text-primary:#111;--color-text-secondary:#555;
+}
+body{font-family:var(--font-sans);font-size:17px;background:#fafafa;color:var(--color-text-primary);padding:0;margin:0}
+#app{max-width:760px;margin:0 auto;padding:1rem 1rem 3rem}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0,0,0,0)}
+
+/* Hero */
+.hero{background:var(--pk50);border:2px solid var(--pk100);border-radius:16px;padding:1.8rem 1.5rem 1.5rem;text-align:center;margin-bottom:1rem}
+.hero-title{font-size:22px;font-weight:500;color:var(--pk800);line-height:1.4;margin-bottom:0.4rem}
+.hero-sub{font-size:15px;color:var(--pk600);margin-bottom:1.1rem}
+.hero-search{display:flex;gap:8px;max-width:560px;margin:0 auto}
+.hero-search input{flex:1;padding:13px 16px;border:2px solid var(--pk200);border-radius:12px;font-size:16px;background:#fff;color:var(--color-text-primary)}
+.hero-search input:focus{outline:none;border-color:var(--pk400)}
+.hero-search button{padding:13px 20px;background:var(--pk400);color:#fff;border:none;border-radius:12px;cursor:pointer;font-size:15px;font-weight:500;white-space:nowrap}
+.hero-search button:hover{background:var(--pk600)}
+
+/* Func row */
+.func-row{display:flex;gap:8px;margin:0.8rem 0}
+.func-btn{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;padding:11px 8px;border:1.5px solid var(--pk100);border-radius:12px;background:#fff;cursor:pointer;font-size:15px;font-weight:500;color:var(--pk600);transition:all .15s}
+.func-btn i{font-size:20px}
+.func-btn.active{background:var(--pk400);border-color:var(--pk400);color:#fff}
+.func-btn:hover:not(.active){background:var(--pk50)}
+
+/* Back */
+.back-btn{display:inline-flex;align-items:center;gap:6px;padding:8px 16px;background:var(--pk50);border:1.5px solid var(--pk100);border-radius:99px;font-size:14px;color:var(--pk800);cursor:pointer;margin-bottom:0.8rem;font-weight:500}
+.back-btn:hover{background:var(--pk100)}
+
+/* Quick grid */
+.section-title{font-size:16px;font-weight:500;color:var(--pk800);margin:0.8rem 0 0.5rem;display:flex;align-items:center;gap:6px}
+.quick-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:7px;margin-bottom:1rem}
+.quick-btn{padding:11px 6px;background:var(--pk50);border:1.5px solid var(--pk100);border-radius:12px;cursor:pointer;font-size:14px;font-weight:500;color:var(--pk800);text-align:center;transition:all .15s;line-height:1.4}
+.quick-btn:hover{background:var(--pk100);border-color:var(--pk400)}
+.quick-btn .qi{display:block;font-size:20px;margin-bottom:3px;color:var(--pk400)}
+
+/* Result cards */
+.result-card{border:1.5px solid var(--pk100);border-radius:14px;overflow:hidden;margin-bottom:14px;background:#fff}
+.result-header{display:flex;align-items:center;gap:10px;padding:13px 16px;background:var(--pk50);border-bottom:1px solid var(--pk100)}
+.result-badge{font-size:12px;padding:3px 10px;border-radius:99px;font-weight:500;white-space:nowrap}
+.badge-long{background:#E1F5EE;color:#085041}
+.badge-women{background:var(--pk100);color:var(--pk800)}
+.badge-tb{background:#FAEEDA;color:#633806}
+.badge-mental{background:#EEEDFE;color:#3C3489}
+.badge-screen{background:#EAF3DE;color:#27500A}
+.badge-admin{background:#F1EFE8;color:#444441}
+.result-name{font-size:16px;font-weight:500;color:var(--pk800)}
+.result-body{padding:14px 16px}
+.info-row{display:flex;align-items:flex-start;gap:8px;margin-bottom:9px;font-size:15px;line-height:1.6}
+.info-label{color:var(--pk600);min-width:72px;flex-shrink:0;font-size:13px;padding-top:2px}
+.info-val{color:var(--color-text-primary)}
+.info-val.fee{color:#A32D2D;font-weight:500}
+.handler-chip{display:inline-flex;align-items:center;gap:8px;background:var(--pk50);border:1.5px solid var(--pk200);border-radius:99px;padding:5px 14px;font-size:15px;font-weight:500;color:var(--pk800)}
+.ext-badge{background:var(--pk400);border-radius:99px;padding:2px 9px;font-size:13px;color:#fff;font-weight:600}
+.docs-list{display:flex;flex-wrap:wrap;gap:6px;margin-top:5px}
+.doc-tag{padding:4px 11px;background:var(--pk50);border:1px solid var(--pk100);border-radius:8px;font-size:14px;color:var(--pk800)}
+.forms-section{margin-top:10px;border-top:1px solid var(--pk100);padding-top:10px}
+.forms-title{font-size:14px;font-weight:500;color:var(--pk800);margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.form-item{display:flex;gap:9px;padding:9px 11px;background:var(--pk50);border:1px solid var(--pk100);border-radius:10px;margin-bottom:5px}
+.form-icon{font-size:17px;color:var(--pk600);flex-shrink:0;margin-top:2px}
+.form-name{color:var(--pk800);font-weight:500;font-size:15px;line-height:1.4}
+.form-desc{color:var(--pk600);font-size:13px;margin-top:2px;line-height:1.5}
+.form-link{display:inline-flex;align-items:center;gap:4px;margin-top:5px;padding:3px 11px;background:var(--pk400);color:#fff;border-radius:99px;font-size:13px;text-decoration:none}
+.form-link:hover{background:var(--pk600)}
+.hospital-section{margin-top:10px;border-top:1px solid var(--pk100);padding-top:10px}
+.hospital-title{font-size:14px;font-weight:500;color:var(--pk800);margin-bottom:7px;display:flex;align-items:center;gap:5px}
+.hospital-list{display:flex;flex-wrap:wrap;gap:5px}
+.hospital-tag{padding:4px 11px;background:#E6F1FB;border:1px solid #B5D4F4;border-radius:8px;font-size:14px;color:#0C447C}
+
+/* District */
+.district-search{display:flex;gap:8px;margin-bottom:0.5rem}
+.district-search input{flex:1;padding:12px 15px;border:2px solid var(--pk200);border-radius:12px;font-size:16px;background:#fff;color:var(--color-text-primary)}
+.district-search input:focus{outline:none;border-color:var(--pk400)}
+.district-search button{padding:12px 18px;background:var(--pk400);color:#fff;border:none;border-radius:12px;cursor:pointer;font-size:15px;font-weight:500}
+.district-card{border:1.5px solid var(--pk100);border-radius:14px;overflow:hidden;margin-bottom:10px;background:#fff}
+.district-header{display:flex;align-items:center;justify-content:space-between;padding:13px 16px;background:var(--pk50);border-bottom:1px solid var(--pk100)}
+.district-name{font-size:16px;font-weight:500;color:var(--pk800);display:flex;align-items:center;gap:7px}
+.district-ext{background:var(--pk400);border-radius:99px;padding:3px 11px;font-size:13px;color:#fff;font-weight:600}
+.district-body{padding:13px 16px}
+.village-grid{display:flex;flex-wrap:wrap;gap:7px}
+.village-tag{padding:7px 15px;background:var(--pk50);border:1.5px solid var(--pk100);border-radius:99px;font-size:15px;color:var(--pk800);cursor:pointer;transition:all .15s}
+.village-tag:hover,.village-tag.highlight{background:var(--pk400);border-color:var(--pk400);color:#fff;font-weight:500}
+.district-pop{font-size:13px;color:var(--pk600);margin-top:9px}
+.result-hit{background:var(--pk50);border:2px solid var(--pk200);border-radius:12px;padding:14px 16px;margin-bottom:10px;font-size:16px;color:var(--pk800);line-height:1.6}
+
+/* AI */
+.ai-chat{border:1.5px solid var(--pk100);border-radius:14px;overflow:hidden;background:#fff}
+.ai-intro{background:var(--pk50);padding:12px 16px;border-bottom:1px solid var(--pk100);font-size:14px;color:var(--pk800);line-height:1.6}
+.chat-msgs{padding:14px;min-height:200px;max-height:400px;overflow-y:auto;display:flex;flex-direction:column;gap:10px}
+.msg{padding:11px 15px;border-radius:12px;font-size:15px;line-height:1.7;max-width:92%}
+.msg-ai{background:var(--pk50);border:1px solid var(--pk100);color:var(--pk800);align-self:flex-start}
+.msg-user{background:var(--pk400);color:#fff;align-self:flex-end}
+.msg-thinking{font-size:14px;color:var(--pk600);align-self:flex-start;padding:7px 11px}
+.ai-chips{padding:10px 14px;border-top:1px solid var(--pk100);border-bottom:1px solid var(--pk100);display:flex;flex-wrap:wrap;gap:6px}
+.ai-chip{padding:5px 13px;background:var(--pk50);border:1px solid var(--pk100);border-radius:99px;font-size:13px;color:var(--pk800);cursor:pointer;transition:all .15s}
+.chat-quickbtn{display:inline-block;padding:6px 14px;background:#fff;border:1.5px solid var(--pk400);border-radius:99px;font-size:14px;color:var(--pk600);cursor:pointer;margin:4px 4px 0 0;font-weight:500;transition:all .15s}
+.chat-quickbtn:hover{background:var(--pk400);color:#fff}
+.chat-hosp-table{width:100%;border-collapse:collapse;margin-top:6px;font-size:13px;background:#fff;border-radius:8px;overflow:hidden}
+.chat-hosp-table th{background:var(--pk100);color:var(--pk800);padding:6px 8px;text-align:left;font-weight:500;white-space:nowrap}
+.chat-hosp-table td{padding:6px 8px;border-bottom:1px solid var(--pk50);color:var(--color-text-primary)}
+.chat-hosp-table tr:last-child td{border-bottom:none}
+.chat-hosp-table tr:nth-child(even){background:var(--pk50)}
+.ai-chip:hover{background:var(--pk100)}
+.chat-input-row{display:flex}
+.chat-input-row input{flex:1;padding:13px 15px;border:none;background:#fff;font-size:15px;color:var(--color-text-primary);outline:none;border-top:1px solid var(--pk100)}
+.chat-input-row button{padding:13px 18px;background:var(--pk400);color:#fff;border:none;border-top:1px solid var(--pk400);cursor:pointer;font-size:16px}
+.chat-input-row button:hover{background:var(--pk600)}
+.empty{text-align:center;padding:2rem;color:var(--pk600);font-size:16px;line-height:1.8}
+
+/* Footer */
+.footer{text-align:center;font-size:13px;color:var(--pk600);margin-top:2rem;padding-top:1rem;border-top:1px solid var(--pk100)}
+</style>
+</head>
+<body>
+<div id="app">
+<h1 class="sr-only">臺中市太平區衛生所全方位業務 AI 導航員</h1>
+
+<div class="hero">
+  <div class="hero-title">臺中市太平區衛生所<br>全方位業務 AI 導航員</div>
+  <div class="hero-sub">輸入業務名稱、里名或承辦人，立即查詢</div>
+  <div class="hero-search">
+    <input type="text" id="main-q" placeholder="例如：幼兒專責醫師、唐氏症篩檢、預防針…" oninput="doMainSearch()" onkeydown="if(event.key==='Enter')doMainSearch()" />
+    <button onclick="doMainSearch()"><i class="ti ti-search" aria-hidden="true"></i> 查詢</button>
+  </div>
+</div>
+
+<div id="home-panel">
+  <div class="func-row">
+    <button class="func-btn" id="btn-district" onclick="setFunc('district')"><i class="ti ti-map-pin" aria-hidden="true"></i> 地段查詢</button>
+    <button class="func-btn" id="btn-ai" onclick="setFunc('ai')"><i class="ti ti-robot" aria-hidden="true"></i> AI 智慧問答</button>
+  </div>
+  <div class="section-title"><i class="ti ti-bolt" aria-hidden="true"></i> 常見業務快速查詢</div>
+  <div class="quick-grid">
+    <div class="quick-btn" onclick="quickMain('幼兒專責醫師')"><span class="qi ti ti-stethoscope" aria-hidden="true"></span>幼兒專責醫師</div>
+    <div class="quick-btn" onclick="quickMain('幼兒預防注射合約診所')"><span class="qi ti ti-syringe" aria-hidden="true"></span>幼兒預防注射診所</div>
+    <div class="quick-btn" onclick="quickMain('腸病毒疫苗')"><span class="qi ti ti-virus" aria-hidden="true"></span>腸病毒疫苗補助</div>
+    <div class="quick-btn" onclick="quickMain('兒童發展篩檢')"><span class="qi ti ti-baby-carriage" aria-hidden="true"></span>兒童發展篩檢</div>
+    <div class="quick-btn" onclick="quickMain('唐氏症')"><span class="qi ti ti-dna" aria-hidden="true"></span>唐氏症篩檢</div>
+    <div class="quick-btn" onclick="quickMain('婚後孕前')"><span class="qi ti ti-heart" aria-hidden="true"></span>婚後孕前健檢</div>
+    <div class="quick-btn" onclick="quickMain('新住民')"><span class="qi ti ti-world" aria-hidden="true"></span>新住民孕婦補助</div>
+    <div class="quick-btn" onclick="quickMain('特殊群體生育')"><span class="qi ti ti-clipboard-heart" aria-hidden="true"></span>特殊群體生育補助</div>
+    <div class="quick-btn" onclick="quickMain('銀髮假牙')"><span class="qi ti ti-tooth" aria-hidden="true"></span>銀髮假牙補助</div>
+    <div class="quick-btn" onclick="quickMain('預防針')"><span class="qi ti ti-vaccine" aria-hidden="true"></span>預防針總覽</div>
+    <div class="quick-btn" onclick="quickMain('新冠疫苗')"><span class="qi ti ti-shield-plus" aria-hidden="true"></span>新冠疫苗</div>
+    <div class="quick-btn" onclick="quickMain('肺炎鏈球菌')"><span class="qi ti ti-lungs" aria-hidden="true"></span>肺炎鏈球菌疫苗</div>
+    <div class="quick-btn" onclick="quickMain('流感疫苗')"><span class="qi ti ti-flask" aria-hidden="true"></span>流感疫苗</div>
+    <div class="quick-btn" onclick="quickMain('戒菸')"><span class="qi ti ti-smoking-no" aria-hidden="true"></span>戒菸門診</div>
+    <div class="quick-btn" onclick="quickMain('成人健檢')"><span class="qi ti ti-activity" aria-hidden="true"></span>成人健檢</div>
+    <div class="quick-btn" onclick="quickMain('婦癌篩檢')"><span class="qi ti ti-ribbon" aria-hidden="true"></span>婦癌篩檢</div>
+    <div class="quick-btn" onclick="quickMain('大腸癌')"><span class="qi ti ti-microscope" aria-hidden="true"></span>大腸癌篩檢</div>
+    <div class="quick-btn" onclick="quickMain('心理')"><span class="qi ti ti-brain" aria-hidden="true"></span>心理諮商</div>
+    <div class="quick-btn" onclick="quickMain('長照')"><span class="qi ti ti-wheelchair" aria-hidden="true"></span>長照服務</div>
+    <div class="quick-btn" onclick="quickMain('弱勢就醫')"><span class="qi ti ti-building-hospital" aria-hidden="true"></span>弱勢就醫補助</div>
+    <div class="quick-btn" onclick="quickMain('汽機車駕照體檢')"><span class="qi ti ti-license" aria-hidden="true"></span>汽機車駕照體檢</div>
+    <div class="quick-btn" onclick="quickMain('高齡駕駛換照')"><span class="qi ti ti-steering-wheel" aria-hidden="true"></span>高齡駕駛換照</div>
+    <div class="quick-btn" onclick="quickMain('復康巴士')"><span class="qi ti ti-bus" aria-hidden="true"></span>復康巴士</div>
+    <div class="quick-btn" onclick="quickMain('食品登錄')"><span class="qi ti ti-clipboard-list" aria-hidden="true"></span>食品業者登錄</div>
+    <div class="quick-btn" onclick="quickMain('行政相驗')"><span class="qi ti ti-file-certificate" aria-hidden="true"></span>行政相驗</div>
+    <div class="quick-btn" onclick="quickMain('美沙冬')"><span class="qi ti ti-pill" aria-hidden="true"></span>美沙冬治療</div>
+    <div class="quick-btn" onclick="quickMain('器捐安寧')"><span class="qi ti ti-heart-handshake" aria-hidden="true"></span>器捐 / 安寧</div>
+    <div class="quick-btn" onclick="quickMain('卡介苗')"><span class="qi ti ti-vaccine" aria-hidden="true"></span>卡介苗接種</div>
+    <div class="quick-btn" onclick="quickMain('結核病')"><span class="qi ti ti-lungs" aria-hidden="true"></span>結核病防治</div>
+  </div>
+</div>
+
+<div id="results-panel" style="display:none">
+  <button class="back-btn" onclick="goHome()"><i class="ti ti-arrow-left" aria-hidden="true"></i> 返回</button>
+  <div id="main-results"></div>
+</div>
+
+<div id="district-panel" style="display:none">
+  <button class="back-btn" onclick="goHome()"><i class="ti ti-arrow-left" aria-hidden="true"></i> 返回首頁</button>
+  <div class="district-search">
+    <input type="text" id="district-q" placeholder="輸入里名，例如：新吉里、中山里、平安里…" oninput="doDistrictSearch()" />
+    <button onclick="doDistrictSearch()"><i class="ti ti-search" aria-hidden="true"></i> 查詢</button>
+  </div>
+  <div id="district-hit"></div>
+  <div class="section-title" style="margin-top:0.8rem"><i class="ti ti-map" aria-hidden="true"></i> 所有里別一覽</div>
+  <div id="all-districts"></div>
+</div>
+
+<div id="ai-panel" style="display:none">
+  <button class="back-btn" onclick="goHome()"><i class="ti ti-arrow-left" aria-hidden="true"></i> 返回首頁</button>
+  <div class="ai-chat">
+    <div class="ai-intro"><strong>AI 問答助理</strong>請直接打字輸入您的問題，我會用最簡單的方式回答您。</div>
+    <div class="chat-msgs" id="chat-msgs">
+      <div class="msg msg-ai">您好！我是太平衛生所業務問答小幫手，請打字輸入您的問題，我會盡快回答您。</div>
+    </div>
+    <div class="chat-input-row">
+      <input type="text" id="chat-in" placeholder="請輸入您的問題，例如：卡介苗去哪打？" onkeydown="if(event.key==='Enter')sendChat()" />
+      <button onclick="sendChat()" aria-label="送出"><i class="ti ti-send" aria-hidden="true"></i></button>
+    </div>
+  </div>
+</div>
+
+<div class="footer">臺中市太平區衛生所　電話：04-23938083　地址：太平區中山路一段213之1號</div>
+</div>
+
+<script>
+const DB=[
+  {id:'pediatrician',name:'幼兒專責醫師照顧制度',badge:'badge-women',badgeText:'婦幼',
+   keywords:['幼兒專責','專責醫師','幼兒照顧','合約診所','幼兒'],
+   handler:'黃護理師',ext:'#222',
+   quickAnswer:'幼兒專責醫師制度是讓您的寶寶固定一位醫師長期照顧。\n請填寫通知函（第一聯下半部和第二聯整張交回），選一家合約診所的醫師當寶寶的專責醫師。\n可以託嬰中心轉交，也可以直接送回衛生所。\n有問題可以打分機222問黃護理師。',
+   steps:['填寫通知函（第一聯下半部＋第二聯整張交回）','選擇合約診所醫師擔任寶寶的專責醫師','可由托嬰中心轉交或直接送回本所'],
+   docs:['兒童健康手冊','健保IC卡'],hours:'週一至週五 08:00–17:00',fee:'免費',
+   forms:[
+     {name:'全國幼兒專責醫師地圖查詢',desc:'點此查詢全國合約院所地圖',link:'https://healthforkids.mohw.gov.tw/HospitalMap/?AntiToken=QuZSKR6HXeVndp6li4YzAZDUrrFiQAmwz5Tes9r1jP0%3D&id=7409933244144d3793db81cbdb430409&city=&district=&keys=#searchCriteria'}
+   ],
+   hospitals:['恆欣小兒科診所 22737419（新平路一段108號）','馮少雄小兒科診所 22783060（中平路121號）','建志耳鼻喉科診所 22766899（中興路110號）','文貴旺診所 22794321（太平路326號）','禎宏診所 23959209（新興路22號）','家宜診所 23937373（樹孝路506號）','宥苗診所 23934406（育賢路335號）','國軍臺中總醫院 23934191（中山路二段348號）'],
+   note:'洽詢：分機222 或 分機244'},
+
+  {id:'infant_vaccine_clinics',name:'幼兒預防注射合約診所名冊',badge:'badge-women',badgeText:'婦幼',
+   keywords:['預防注射','預防接種合約','打疫苗','合約診所','幼兒打針','幼兒預防注射'],
+   handler:'林護理師',ext:'#217',
+   quickAnswer:'太平區有18家合約診所可以帶寶寶去打預防針，像恆欣小兒科、馮少雄小兒科、長安醫院、國軍臺中總醫院等都有合約。\n建議出發前先打電話確認門診時間，因為門診時間偶爾會調整。\n完整名單可以到「查詢」分頁打「幼兒預防注射合約診所」看全部18家的電話和地址。',
+   steps:['攜帶兒童健康手冊及健保卡','至下方任一合約診所掛號接種','建議事先電話洽詢門診時間，以防異動'],
+   docs:['兒童健康手冊','健保IC卡'],hours:'依各診所門診時間，請事先電話洽詢',fee:'公費疫苗項目免費',
+   forms:[],
+   hospitals:['恆欣小兒科診所 22737419（新平路一段108號，週日休診）','馮少雄小兒科診所 22783060（中平路121號，週六休診）','建志耳鼻喉科診所 22766899（中興路110號，週日休診）','卓小兒科診所 22769879（中興路51-2號，週四休診）','文貴旺診所 22794321（太平路326號，週日休診）','長安醫院 36113611（永平路一段9號，週日休診）','康祐診所 23931234（中山路1段220號，週六休診）','國軍臺中總醫院 23934191（中山路2段348號，週日休診）','幼康小兒科診所 22738885（中山路3段139號，週日休診）','蔡醫師小兒科診所 22770206（宜昌路556號，週三休診）','弘鑫耳鼻喉科診所 23933595（樹孝路202號，週日休診）','耀仁診所 23939815（樹孝路39-7號，週五休診）','家宜診所 23937373（樹孝路506號，週日休診）','禎宏診所 23959209（新興路22號，週日休診）','祥威新光耳鼻喉科兒科診所 23938119（育賢路350號，週三休診）','珞誠診所 23931514（立功路288號，週六休診）','宥苗診所 23934406（育賢路335號，週四休診）','怡馨親子診所 23938026（育賢路253號，週二、日休診）'],
+   note:'僅供參考，請務必事先電話洽詢，以防門診時間異動'},
+
+  {id:'enterovirus_vaccine',name:'低收入戶幼兒腸病毒疫苗補助',badge:'badge-women',badgeText:'婦幼',
+   keywords:['腸病毒','腸病毒疫苗','EV-A71','低收入戶幼兒','安置機構','腸病毒疫苗補助'],
+   handler:'林護理師',ext:'#217',
+   quickAnswer:'這項補助是給設籍臺中市、2歲以下、低收入戶或安置機構的幼兒。\n符合資格的話，可以帶兒童健康手冊、健保卡和低收入戶證明，到馮少雄小兒科、卓小兒科、國軍臺中總醫院、家宜診所或怡馨親子診所這5家合約院所接種。\n如果不確定自己符不符合資格，可以打分機217問林護理師。',
+   steps:['確認資格（設籍臺中市、2歲以下、低收入戶或安置機構幼兒）','攜帶相關證明文件','至下方合約院所接種'],
+   docs:['兒童健康手冊','健保IC卡','低收入戶證明或安置機構證明'],hours:'依各合約院所門診時間',
+   fee:'符合資格者補助接種費用',
+   forms:[{name:'臺中市補助低收入戶、安置機構幼兒腸病毒疫苗合約院所名單',desc:'補助對象：設籍臺中市、2歲以下、低收入戶或安置機構幼兒',link:'https://www.health.taichung.gov.tw/26198/26327/26565/26697/3258947'}],
+   hospitals:['馮少雄小兒科診所 22783060（中平路121號，週六休診）','卓小兒科診所 22769879（中興路51-2號，週四休診）','國軍臺中總醫院 23934191（中山路2段348號，週日休診）','家宜診所 23937373（樹孝路506號，週日休診）','怡馨親子診所 23938026（育賢路253號，週二、日休診）'],
+   note:'條件：戶籍臺中市＋2歲以下＋低收入戶（或安置機構幼兒）'},
+
+  {id:'child_dev',name:'兒童發展篩檢門診',badge:'badge-women',badgeText:'婦幼',
+   keywords:['兒童發展','發展篩檢','兒童篩檢','發展遲緩','6個月','7歲','學齡前','粗大動作','精細動作','語言'],
+   handler:'黃護理師',ext:'#222',
+   quickAnswer:'這個門診是給6個月到未滿7歲的學齡前兒童，檢查粗大動作、精細動作、語言認知和社會性發展。\n採預約制，限額50人，要先打分機222預約。\n請帶健保卡和兒童健康手冊過來，全程免費。',
+   steps:['電話預約（採預約制，限額50人）','攜帶健保卡及兒童健康手冊','進行粗大動作、精細動作、語言認知、社會性發展篩檢'],
+   docs:['健保IC卡','兒童健康手冊'],hours:'115年7月7日、7月14日、7月21日（二）09:00–11:30',fee:'全程免費',
+   forms:[{name:'兒童發展篩檢門診時間表及預約',desc:'對象：6個月至未滿7歲學齡前兒童；地點：太平區衛生所；採預約制，限額50人',link:'https://www.taipingphc.taichung.gov.tw/3977480/post'}],
+   hospitals:[],note:'洽詢：分機222'},
+
+  {id:'downs',name:'唐氏症篩檢補助',badge:'badge-women',badgeText:'婦幼',
+   keywords:['唐氏症','母血','染色體','34歲','懷孕','孕婦篩檢'],
+   handler:'黃護理師',ext:'#222',
+   quickAnswer:'這項補助是給設籍臺中市、未滿34歲的懷孕婦女。\n第1孕期或第2孕期擇一篩檢，最高各補助2,200元。\n可以到臺中醫院、中山醫大附醫、中國醫藥大學附醫等合約院所受檢，詳細名單可以打分機222跟黃護理師索取。',
+   steps:['確認資格（設籍台中市未滿34歲懷孕婦女）','至合約院所受檢','補助款由健康署核撥'],
+   docs:['身分證','健保IC卡','媽媽手冊（若有）'],hours:'預約合約院所',
+   fee:'第1孕期或第2孕期，最高各補助2,200元（擇一）',
+   forms:[{name:'孕婦母血唐氏症篩檢補助說明',desc:'補助設籍台中市未滿34歲之懷孕婦女',link:null}],
+   hospitals:['衛生福利部臺中醫院','中山醫學大學附設醫院','中國醫藥大學附設醫院','茂盛醫院','澄清綜合醫院中港分院','林婦產科診所','新基婦產科診所','禾馨安和婦幼診所','國軍臺中總醫院（太平）','劉玉麒婦產科診所（太平）'],
+   note:'共35家合約院所，詳細名單請向承辦人索取'},
+
+  {id:'marriage',name:'婚後孕前健康檢查補助',badge:'badge-women',badgeText:'婦幼',
+   keywords:['婚後','婚前','孕前','健康檢查','結婚','夫妻','婚後孕前'],
+   handler:'黃護理師',ext:'#222',
+   quickAnswer:'這是給已婚但還沒生育的夫妻，其中一方要設籍臺中市。\n男性補助680元（5項檢查）、女性補助1,870元（9項檢查），夫妻要分別掛號受檢。\n請帶身分證、健保卡和戶口名簿正本，到茂盛醫院、澄清醫院中港分院等合約醫院預約。',
+   steps:['備齊文件→至合約醫院掛號受檢','夫妻分別掛號請費'],
+   docs:['配偶全戶戶口謄本或戶口名簿正本','身分證','健保IC卡','外籍配偶：居留證或旅行證正本'],
+   hours:'至合約醫院預約',fee:'男性680元（5項）、女性1,870元（9項）；配偶一方設籍台中市，已婚尚未生育夫妻',
+   forms:[{name:'婚後孕前健康檢查補助說明',desc:'男性：愛滋、梅毒、尿液、血液、精液分析；女性另加甲狀腺、德國麻疹抗體、水痘抗體、醣化血色素、子宮頸抹片',link:null}],
+   hospitals:['茂盛醫院','澄清綜合醫院中港分院','林婦產科診所','新基婦產科診所','禾馨安和婦幼診所','亞洲大學附屬醫院'],
+   note:''},
+
+  {id:'new_resident',name:'新住民懷孕婦女未納健保產前補助',badge:'badge-women',badgeText:'新住民',
+   keywords:['新住民','外籍','配偶','未納健保','產前','懷孕','補助','居留證'],
+   handler:'黃護理師',ext:'#222',
+   quickAnswer:'這是給還沒有健保的新住民懷孕婦女，產檢費用比照本國人補助。\n請帶戶口名簿正本（或戶籍謄本正本）、中華民國居留證正本、孕婦健康手冊和配偶身分證來衛生所申請。\n注意居留證一定要正本，其他證件無法替代，可以打分機222問黃護理師。',
+   steps:['備齊文件至衛生所申請','查驗身分證明文件','至健康署系統登記個案','核發產前檢查個案紀錄聯（共15份）'],
+   docs:['戶口名簿正本或現戶戶籍謄本正本','中華民國居留證正本（其他證件一律不行）','孕婦健康手冊或其他產檢相關資料','配偶身分證'],
+   hours:'週一至週五 08:00–17:00',fee:'產前檢查費用比照本國人補助',
+   forms:[{name:'新住民懷孕婦女未納健保產前補助申請單',desc:'含個案姓名、居留證號、國籍別、孕次、胎次、最後一次月經日、預產期等欄位',link:'https://drive.google.com/file/d/1SieGPcnmVUyhqXNEObDLqF1J5ZD8mdCW/view?usp=drive_link'}],
+   hospitals:[],note:''},
+
+  {id:'special_birth',name:'特殊群體生育調節補助',badge:'badge-women',badgeText:'婦幼',
+   keywords:['特殊群體','生育調節','生育補助','避孕器','輸卵管','輸精管','精神疾病','身障','低收入'],
+   handler:'黃護理師',ext:'#222',
+   quickAnswer:'這是給有精神疾病、有礙優生疾病、領有身障手冊或低收入戶的民眾，補助裝避孕器、輸卵管結紮或輸精管結紮。\n請帶戶口名簿或戶籍謄本，還有相應的證明文件（身障證明、低收入戶證明等），到衛生所辦理。\n承辦人審核通過後，再到合約醫院施術，可以打分機222問黃護理師。',
+   steps:['備齊文件至衛生所辦理','承辦人審核資格','核准後至合約醫院施術'],
+   docs:['戶口名簿正本或現戶戶籍謄本正本','身心障礙證明（如適用）','低收入戶證明（如適用）','有礙優生疾病證明（如適用）'],
+   hours:'週一至週五 08:00–17:00',fee:'依補助項目不同',
+   forms:[{name:'特殊群體生育調節補助申請書',desc:'申請條件：患有精神疾病、患有有礙優生疾病、領有身障手冊、低收入戶。補助項目：子宮內避孕器、輸卵管結紮、輸精管結紮',link:'https://drive.google.com/file/d/1R2g6WKT22RNNOkMtEqa_penE4_Y_bmbf/view?usp=drive_link'}],
+   hospitals:[],note:''},
+
+  {id:'women',name:'婦幼業務（產前、兒保、托嬰）',badge:'badge-women',badgeText:'婦幼',
+   keywords:['婦幼','孕婦','產前','嬰兒','幼兒','兒保','托嬰','媽媽手冊'],
+   handler:'黃護理師',ext:'#222',
+   quickAnswer:'婦幼業務包含產前檢查、兒童保健、托嬰相關諮詢，服務時間是週二、四上午9點到12點。\n請帶健保卡、媽媽手冊和身分證過來，現場會有衛教諮詢和補助核發。\n有問題可以打分機222問黃護理師。',
+   steps:['掛號或電話預約','攜帶健保卡與媽媽手冊','衛教諮詢','補助核發'],
+   docs:['健保IC卡','媽媽手冊','身分證'],hours:'週二、四 09:00–12:00',fee:'依補助項目不同',
+   forms:[],hospitals:[],note:''},
+
+  {id:'dental',name:'65歲以上銀髮族假牙裝置補助',badge:'badge-long',badgeText:'長照',
+   keywords:['假牙','銀髮','老人','65歲','牙齒','義齒','銀髮假牙'],
+   handler:'廖護理師',ext:'#223',
+   quickAnswer:'這項補助是給設籍臺中市滿1年、滿65歲、缺牙嚴重，而且所得稅率5%以下的長輩，每人終身可以申請1次。\n請帶身分證、健保卡、戶籍謄本和最近一年的所得稅核定通知書來衛生所申請，審查通過後再到合約牙醫診所裝置。\n如果是低收入戶請洽社會局，原住民請洽原民會，一般民眾洽分機223廖護理師。',
+   steps:['確認資格（設籍台中市滿1年且滿65歲、缺牙極重度/重度、所得稅率5%以下）','備齊文件至衛生所申請','審查委員會核准後至合約牙醫診所裝置'],
+   docs:['健保IC卡','身分證','戶籍謄本','最近一年所得稅核定通知書'],
+   hours:'週一至週五 08:00–17:00',fee:'活動式假牙補助，每人終身1次（非現金給付）',
+   forms:[{name:'114年度65歲以上銀髮族假牙裝置補助計畫說明',desc:'計畫期程：114年1月1日至114年12月31日，或預算用完為止',link:null}],
+   hospitals:['大明牙醫診所（大里）','金山牙醫診所（大里）','衛生福利部豐原醫院','長青牙醫診所（豐原）','藍牙醫診所（潭子）','健宏牙醫診所（潭子）','台中慈濟醫院','勤美牙醫診所（龍井）'],
+   note:'低收入戶請洽社會局；原住民請洽原住民族事務委員會'},
+
+  {id:'vacc',name:'兒童常規預防接種（3歲以下幼兒催注）',badge:'badge-women',badgeText:'預防接種',
+   keywords:['預防接種','幼兒','疫苗','打針','接種','3歲','催注','預防針','兒童預防針','小朋友疫苗','常規疫苗'],
+   handler:'林護理師',ext:'#217',
+   quickAnswer:'👶 幼兒常規疫苗接種時間是每週二、三上午8:30–11:30。\n📓 請帶兒童健康手冊和健保卡來，現場醫師評估後再注射，公費疫苗免費喔！\n💡 卡介苗時間不一樣，是每月第二個禮拜五，問我「卡介苗」就會告訴您詳細時間。',
+   steps:['填寫預防接種評估單','登記→醫師評估','護理指導→注射'],
+   docs:['健保IC卡','兒童健康手冊'],
+   hours:'週二、三 08:30–11:30（卡介苗接種時段不同，請見「卡介苗接種」項目）',
+   fee:'公費疫苗免費',forms:[],hospitals:[],note:'「預防針」泛稱：幼兒常規疫苗請看本項、卡介苗請見獨立項目；成人流感、肺炎鏈球菌、新冠疫苗請見下方「成人預防接種」相關項目'},
+
+  {id:'covid_vaccine',name:'COVID-19新冠疫苗接種',badge:'badge-screen',badgeText:'預防針(成人)',
+   keywords:['新冠','新冠疫苗','COVID','COVID-19','肺炎疫苗','新冠肺炎疫苗','預防針','成人預防針','莫德納','Novavax'],
+   handler:'吳護理師',ext:'#219',
+   quickAnswer:'💉 新冠疫苗是成人接種的疫苗喔。\n🕐 接種時間是週一至週五上午8:30–11:30。\n📋 公費對象依公告分階段開放，要確認您是否符合資格，撥打衛生所電話由總機轉接即可。\n📝 也可以事先下載接種須知意願書填好再來，現場會比較快喲！',
+   steps:['確認公費接種資格','填寫接種須知暨接種評估及意願書','至本所或合約院所接種'],
+   docs:['健保IC卡','接種須知暨接種評估及意願書（可現場填寫或事先下載填妥）'],
+   hours:'週一至週五 08:30–11:30',
+   fee:'公費對象免費；詳細公費對象請洽承辦人員',
+   forms:[{name:'COVID-19 疫苗接種須知、接種評估及意願書',desc:'疾病管制署提供各廠牌疫苗接種須知與意願書下載，可事先填寫攜帶',link:'https://www.cdc.gov.tw/Category/MPage/4P2oowuEp0CoDlob356s8g'}],
+   hospitals:[],note:''},
+
+  {id:'pneumo_vaccine',name:'肺炎鏈球菌疫苗接種',badge:'badge-screen',badgeText:'預防針(成人)',
+   keywords:['肺炎鏈球菌','肺炎疫苗','13價','23價','PCV13','PPV23','長者疫苗','預防針','成人預防針'],
+   handler:'溫護理師',ext:'#215',
+   quickAnswer:'💉 肺炎鏈球菌疫苗是給65歲以上長輩、55-64歲原住民，或60-64歲設籍臺中市市民接種的。\n🕐 接種時間是週一至週五上午8:30–11:30。\n💊 65歲以上可公費接種13價和23價兩種，要間隔1年；60-64歲市民由市府補助23價一劑，用罄為止。\n🪪 原住民朋友記得帶戶口名簿或戶籍謄本，確認資格的話撥打衛生所電話由總機轉接即可喲！',
+   steps:['確認資格（65歲以上／55-64歲原住民／60-64歲市民／高風險對象）','攜帶證件至本所或合約院所接種','如為高風險對象，需間隔規定週數接種第二劑'],
+   docs:['健保IC卡','原住民請攜帶戶口名簿或戶籍謄本'],
+   hours:'週一至週五 08:30–11:30',
+   fee:'公費補助；60-64歲市民由市府補助23價疫苗一劑，用罄為止',
+   forms:[{name:'肺炎鏈球菌疫苗接種相關資訊',desc:'65歲以上民眾公費接種13價及23價疫苗，兩劑需間隔1年；高風險對象接種PCV13後間隔8週再接種PPV23',link:'https://www.cdc.gov.tw/Category/MPage/zK8mS8V4oEfjRy8Dlv0yJw'}],
+   hospitals:[],
+   note:'對象：65歲以上民眾／55-64歲原住民／60-64歲設籍臺中市市民／65歲以上高風險對象（脾臟功能缺損、先天或後天免疫不全、人工耳植入、腦脊髓液滲漏、惡性腫瘤接受免疫抑制劑或放射治療者、器官移植者）、機構住民及洗腎患者'},
+
+  {id:'flu_vaccine',name:'流感疫苗接種',badge:'badge-screen',badgeText:'預防針(成人)',
+   keywords:['流感','流感疫苗','流行性感冒疫苗','公費流感','預防針','成人預防針','兒童流感疫苗'],
+   handler:'溫護理師',ext:'#215',
+   quickAnswer:'🤧 流感疫苗每年10月開始接種，依疾管署公告分階段開放公費對象。\n👨 大人接種時間是週一至週五上午8:30–11:30。\n👶 小孩接種時間是每週二、三上午8:30–11:30。\n💉 未滿9歲的小孩第一次接種要打2劑，中間要間隔4週以上喲！',
+   steps:['確認是否為公費對象','每年10月起依疾管署公布分階段接種','未滿9歲兒童初次接種者，需接種2劑，間隔4週以上'],
+   docs:['健保IC卡','兒童健康手冊（幼兒適用）'],
+   hours:'大人：週一至週五 08:30–11:30；小孩：每週二、三 08:30–11:30（每年10月起開始接種）',
+   fee:'公費對象免費',
+   forms:[{name:'流感疫苗接種資訊',desc:'流感疫苗保護力約一年，建議每年接種一劑；合約院所可至臺中市政府衛生局網站查詢',link:'https://www.cdc.gov.tw/Category/Page/yaQGBK5nX3xWxVdzsXaW3A'}],
+   hospitals:[],note:'公費對象依疾管署每年公布分階段開放，請洽承辦人員確認最新對象範圍'},
+
+  {id:'smoking_cessation',name:'戒菸門診',badge:'badge-admin',badgeText:'成人保健',
+   keywords:['戒菸','戒菸門診','尼古丁','菸害防制','吸菸'],
+   handler:'溫護理師',ext:'#215',
+   quickAnswer:'戒菸門診每人每年可以補助2個療程，每療程8週，要在同一家院所90天內完成。\n只要有戒菸意願都可以來，連孕婦、青少年都可以接受衛教，藥品部分負擔全免。\n如果想先諮詢，也可以打免費專線0800-636363，或打分機215問溫護理師。',
+   steps:['尼古丁成癮度測試（4分以上）或平均每天吸菸10支以上，符合戒菸治療資格','有戒菸意願者皆可接受戒菸衛教（含孕婦、青少年、不適合用藥者）','每人每年補助2個療程（每療程8週），需於同一院所或藥局90天內完成'],
+   docs:['健保IC卡'],hours:'門診時間請來電洽詢',
+   fee:'免收藥品部分負擔；免費戒菸諮詢專線 0800-636363',
+   forms:[{name:'臺中市衛生局菸害防制專區',desc:'查詢戒菸治療補助及合約院所相關資訊',link:'https://www.health.taichung.gov.tw/26886/Nodelist'}],
+   hospitals:[],note:''},
+
+  {id:'adult',name:'成人健檢及中老年業務',badge:'badge-screen',badgeText:'健檢',
+   keywords:['成人','健檢','健康檢查','40歲','65歲','三高','中老年','B肝','C肝','成人健檢'],
+   handler:'蔡護理師',ext:'#218',
+   quickAnswer:'成人健檢時間是每週一、五上午8點半到11點半，免費，但要記得前一晚12點後就不能再吃東西。\n40歲以上每3年可以做1次，65歲以上每年都可以做1次。\n請帶健保卡直接來掛號，有問題打分機218問蔡護理師。',
+   steps:['掛號','填寫健查表→一般檢查→抽血及驗尿','安排看報告','看報告、醫師診察評估'],
+   docs:['健保IC卡'],hours:'週一、五 08:30–11:30（前一晚12時後禁食）',
+   fee:'免費（40歲以上每3年1次；65歲以上每年1次）',
+   forms:[],hospitals:[],note:''},
+
+  {id:'breast',name:'婦癌篩檢（乳癌、子宮頸癌、HPV）',badge:'badge-screen',badgeText:'篩檢',
+   keywords:['乳癌','子宮頸','HPV','婦癌','抹片','乳房','篩檢','婦癌篩檢'],
+   handler:'林護理師',ext:'#237',
+   quickAnswer:'乳癌篩檢是45到69歲每2年1次，子宮頸抹片是30歲以上每年1次，都是免費的。\n請先確認自己符合資格，再填轉介單到合約醫院或衛生所定點篩檢。\n預約和詳細時間可以打分機237問林護理師。',
+   steps:['確認篩檢資格','填寫轉介單','至合約醫院或衛生所定點篩檢'],
+   docs:['健保IC卡'],hours:'預約時間',
+   fee:'免費（乳癌45–69歲每2年1次；子宮頸30歲以上每年1次）',
+   forms:[],hospitals:[],note:''},
+
+  {id:'colon',name:'大腸直腸癌篩檢、口腔癌篩檢、LDCT肺癌篩檢',badge:'badge-screen',badgeText:'篩檢',
+   keywords:['大腸癌','大腸','直腸','口腔癌','檳榔','LDCT','肺癌','大腸癌篩檢'],
+   handler:'廖護理師',ext:'#223',
+   quickAnswer:'大腸癌篩檢是50到74歲每2年1次；口腔癌篩檢是30歲以上、有嚼檳榔或吸菸習慣的人每2年1次，都免費。\n大腸癌篩檢直接到窗口領採便盒帶回家採檢就好；口腔癌篩檢要填轉介單。\n服務時間是週一到週五上班時間，洽分機223廖護理師。',
+   steps:['確認篩檢資格','至窗口領取採便盒或填寫轉介單','完成篩檢後追蹤'],
+   docs:['健保IC卡'],hours:'週一至週五 08:00–17:00',
+   fee:'免費（大腸癌：50–74歲每2年1次；口腔癌：30歲以上有嚼檳榔/吸菸者每2年1次）',
+   forms:[],hospitals:[],note:''},
+
+  {id:'mental',name:'精神及心理衛生、免費心理諮商',badge:'badge-mental',badgeText:'心理',
+   keywords:['心理','精神','諮商','憂鬱','焦慮','毒品','藥癮','酒癮','情緒','免費心理諮商'],
+   handler:'黃護理師',ext:'#238',
+   quickAnswer:'免費心理諮商時間是每週二或週四下午1點半到4點半，每次晤談50分鐘。\n可以打電話或上網預約，網址是 mental.health.taichung.gov.tw。\n如果想找配合的心理諮商所，鬱心身心診所、中太身心診所等都有合作，分機238黃護理師可以協助安排。',
+   steps:['電話或網路預約','初次晤談評估','定期諮詢（每次50分鐘）'],
+   docs:['健保IC卡','身分證'],hours:'星期二或星期四下午 13:30–16:30',fee:'免費',
+   forms:[{name:'心理諮商預約說明',desc:'預約網址：https://mental.health.taichung.gov.tw/',link:'https://mental.health.taichung.gov.tw/'}],
+   hospitals:['鬱心身心診所 04-22780799','中太身心診所 04-2395-1618','竹見好轉心理諮商所 04-22788855','繽心心理治療所 0965-321326'],
+   note:''},
+
+  {id:'longcare',name:'長照業務及高齡友善',badge:'badge-long',badgeText:'長照',
+   keywords:['長照','照顧','失能','居家','老人','長者','高齡','長照服務'],
+   handler:'蔡護理師',ext:'#218',
+   quickAnswer:'長照申請可以打電話諮詢，或直接來衛生所填需求評估表。\n填完之後衛生局會派員來評估，核定照顧計畫，依長照2.0核定補助。\n請帶身分證、健保卡、診斷證明書，如果有殘障手冊也可以一起帶來，洽分機218蔡護理師。',
+   steps:['電話諮詢或現場申請','填寫需求評估表','衛生局派員評估','核定照顧計畫'],
+   docs:['身分證','健保IC卡','診斷證明書','殘障手冊（如有）'],
+   hours:'週一至週五 08:00–17:00',fee:'依長照2.0計畫核定',
+   forms:[],hospitals:[],note:''},
+
+  {id:'weak',name:'弱勢族群就醫補助（公益彩券回饋金）',badge:'badge-long',badgeText:'社福',
+   keywords:['弱勢','就醫','補助','低收入','中低收入','健保欠費','救護車','弱勢就醫'],
+   handler:'黃護理師',ext:'#238',
+   quickAnswer:'每人每年最高可以補助3萬元，但單次就醫費用要達3,000元以上才能申請。\n請準備身分證正反面影本、戶口名簿影本、低或中低收入戶證明、收據正本，還有郵局存摺封面影本，填4頁申請書。\n115年度的計畫到12月15日截止，洽分機238黃護理師。',
+   steps:['備齊文件','填具申請書（共4頁）','至衛生所繳交或郵寄','核准後撥款至帳戶'],
+   docs:['身分證正反面影本','新式戶口名簿影本','低/中低收入戶正本','申請書（共4頁）','收據正本及費用明細','郵局存摺封面影本'],
+   hours:'週一至週五 08:00–17:00',fee:'每人每年最高補助3萬元；單次需達3,000元以上',
+   forms:[{name:'弱勢族群就醫補助申請書（115年度，共4頁）',desc:'含申請人基本資料、代理申請委託書、補助對象檢附資料、領款單據',link:null}],
+   hospitals:[],note:'115年計畫至12月15日止'},
+
+  {id:'motor',name:'汽機車駕照體檢',badge:'badge-admin',badgeText:'體檢',
+   keywords:['機車','駕照','體檢','考照','摩托車','機車體檢','汽車駕照體檢','駕照體檢','一般駕照體檢'],
+   handler:'莊護理師',ext:'#216',
+   quickAnswer:'一般考照或駕照延期的體檢時間是每週一、四上午8點半到11點半，費用150元（多一份證明加收50元）。\n請帶健保卡、身分證或駕照，還要準備2張二吋彩色照片（3個月內拍的）。\n如果您是70歲以上要辦高齡換照，要問的是另一項「高齡駕駛換照」，不是這個喔。',
+   steps:['填申請表','核對資料→掛號繳費','常規檢查→醫師查身體','填發證明書'],
+   docs:['健保IC卡','身分證或駕照','二吋彩色相片2張（近3個月）'],
+   hours:'週一、四 08:30–11:30',fee:'150元（每增1份加收50元）',
+   forms:[],hospitals:[],note:'適用一般考照、駕照延期之體檢；汽車相關監理業務請至臺中區監理所。70歲以上高齡駕駛換照請見「高齡駕駛換照」項目'},
+
+  {id:'elderly_license',name:'高齡駕駛人換照（體檢及認知功能測驗）',badge:'badge-admin',badgeText:'體檢',
+   keywords:['高齡駕駛','高齡換照','70歲換照','75歲換照','老人駕照','認知功能測驗','長者駕照','高齡駕照體檢'],
+   handler:'蔡護理師',ext:'#218',
+   quickAnswer:'70歲以上換照新制，要先體檢、再上2小時的高齡換照講習，換照後駕照效期會延到75歲。\n75歲以上除了體檢和講習，還要多通過一項認知功能測驗，之後每3年要再換照一次。\n體檢時間是週一、四上午8點半到11點半，費用150元，請帶健保卡、身分證或駕照、2張二吋照片，洽分機218蔡護理師。',
+   steps:['年滿70歲：駕照效期屆滿前2年內完成體檢及2小時高齡換照講習，換照後效期延至75歲','年滿75歲：除體檢及講習外，另需通過認知功能測驗合格（或檢具無中度以上失智證明），緩衝期3年內完成換照，換照後每3年需再換照一次','115年5月31日已滿70歲未滿75歲者，應於117年5月31日前完成換照'],
+   docs:['健保IC卡','身分證或駕照','二吋彩色相片2張（近3個月）'],
+   hours:'週一、四 08:30–11:30',
+   fee:'體檢150元（每增1份加收50元）；高齡換照講習及認知功能測驗費用請洽監理單位',
+   forms:[{name:'高齡駕駛人駕照管理制度說明（交通部公路局）',desc:'115年5月31日起實施新制：70歲以上駕駛人換照需體檢、75歲以上另需通過認知功能測驗；70歲以上自願繳回駕照可獲TPASS乘車優惠回饋',link:'https://www.thb.gov.tw/cp.aspx?n=169'}],
+   hospitals:[],note:'體檢效期3個月、高齡換照講習效期1年；講習預約請至監理服務網'},
+
+  {id:'rehab_bus',name:'小型復康巴士服務',badge:'badge-long',badgeText:'無障礙',
+   keywords:['復康巴士','身障','輪椅','無障礙','交通','復康'],
+   handler:'廖護理師',ext:'#223',
+   quickAnswer:'復康巴士是免費的，但限一名家屬陪同搭乘，要先電話預約確認身障資格。\n週一到週五早上8點發頭班車，週六只到中午12點，平常日服務時段比較長。\n屯區的預約專線是04-22792486，第一次預約也可以打分機223問廖護理師。',
+   steps:['首次電話預約確認身障資格','建立個案資料','確認優先等級（A/B/C級）','按規定提前天數電話預約'],
+   docs:['身心障礙手冊或身心障礙證明'],
+   hours:'週一至週五上午8時發頭班車；週六上午8時至中午12時',fee:'免費（限一名家屬陪同）',
+   forms:[],hospitals:[],note:'屯區預約專線：04-22792486'},
+
+  {id:'food_registration',name:'食品業者登錄（非登不可）',badge:'badge-admin',badgeText:'行政',
+   keywords:['食品登錄','非登不可','食品業者','自然人憑證','工商憑證','食品業登錄'],
+   handler:'蕭護理師',ext:'#244',
+   quickAnswer:'請攜帶工商憑證、自然人憑證或健保卡，三種任選一種就可以辦理。\n如果沒有自然人憑證，要先到戶政事務所申辦好才能來。\n如果要用健保卡辦理，記得要先在家設定好健保卡網路服務的密碼，不然現場沒辦法受理喔。',
+   steps:['備妥工商憑證、自然人憑證或健保卡（三者擇一）','至「食品藥物業者登錄平台」（非登不可）線上插卡登錄','如需到衛生所現場辦理，請先準備好憑證再前來'],
+   docs:['工商憑證、自然人憑證或健保卡（三者擇一）'],
+   hours:'週一至週五 08:00–17:00',fee:'免費',
+   forms:[{name:'臺中市食品業者登錄（非登不可）說明',desc:'使用工商憑證或負責人之自然人憑證、健保卡，至食品藥物業者登錄平台線上插卡登錄；系統操作諮詢專線 0809-080209',link:'https://www.fds.taichung.gov.tw/1210187/1210224/1210225/2282491/2282500'}],
+   hospitals:[],
+   note:'重要提醒：①若無自然人憑證，請先至戶政事務所申辦後再來辦理。②若要使用健保卡辦理，需事先在家完成健保卡網路服務密碼設定，否則現場無法受理。'},
+
+  {id:'verify',name:'行政相驗',badge:'badge-tb',badgeText:'行政',
+   keywords:['相驗','死亡','死亡證明','往生','驗屍','行政相驗'],
+   handler:'莊護理師',ext:'#216',
+   quickAnswer:'行政相驗是隨到隨辦，緊急的話可以直接打04-23938083。\n家屬要提出申請並填申請書，醫師會去現場相驗，之後填發死亡證明書。\n費用是1,000元一次（含10份死亡證明書），記得直系親屬一定要在場。',
+   steps:['家屬提出申請並填具申請書','醫師前往實地相驗','填發死亡證明書','繳費'],
+   docs:['亡者及申請人身分證','相關疾病診斷書或病歷摘要'],
+   hours:'隨到隨辦（緊急請電 04-23938083）',fee:'1,000元/次（含10份死亡證明書）',
+   forms:[],hospitals:[],note:'直系親屬必須在場'},
+
+  {id:'methadone',name:'美沙冬替代治療（抽血營養費）',badge:'badge-mental',badgeText:'替代治療',
+   keywords:['美沙冬','替代治療','成癮','抽血','營養費'],
+   handler:'黃護理師',ext:'#238',
+   quickAnswer:'要先請醫院開立申請書，所有欄位都要蓋章，再帶身分證正本和印章過來。\n如果承辦人在所，會直接核對後現金給付；不在的話，值班同仁聯絡後當天也能現場領取。\n費用依醫院核定是500元或100元，洽分機238黃護理師。',
+   steps:['備齊文件：醫院申請書（所有欄位蓋章）＋身分證正本＋印章','承辦人在所：通知核對→直接給付現金','承辦人不在所：值班同仁電聯，當日可現場請領'],
+   docs:['醫院開立申請書（所有欄位蓋章）','本人身分證正本','印章（若無蓋手印）'],
+   hours:'週一至週五 08:00–17:00',fee:'依醫院核定（500元或100元）',
+   forms:[{name:'臺中市政府衛生局轉介替代治療初診補助方案申請書',desc:'需至少3個醫院章＋護理師章；核定意見由院方填寫，不得有塗改',link:null}],
+   hospitals:[],note:''},
+
+  {id:'organ',name:'醫管科業務（安寧、器捐、CPR/AED、預立醫療）',badge:'badge-long',badgeText:'醫管',
+   keywords:['安寧','器捐','器官捐贈','CPR','AED','預立醫療','器捐安寧'],
+   handler:'廖護理師',ext:'#223',
+   quickAnswer:'器官捐贈同意書可以勾選全部或部分器官，需要2位見證人，也可以加註在健保卡上。\n預立安寧緩和醫療意願書也需要2位見證人，諮詢專線是0800-220-927。\n請帶健保卡、身分證和相關文件來，洽分機223廖護理師。',
+   steps:['填寫相關意願書','至窗口辦理或電話諮詢'],
+   docs:['健保IC卡','身分證','各業務所需文件'],
+   hours:'週一至週五 08:00–17:00',fee:'依業務項目不同',
+   forms:[{name:'器官捐贈同意書',desc:'可勾選全部或部分器官；需見證人2位；可加註於健保IC卡',link:null},{name:'預立安寧緩和醫療暨維生醫療抉擇意願書',desc:'需見證人2位；諮詢：0800-220-927',link:null}],
+   hospitals:[],note:''},
+
+  {id:'bcg',name:'卡介苗接種',badge:'badge-women',badgeText:'預防接種',
+   keywords:['卡介苗','BCG','結核病疫苗','卡介苗接種','預防針'],
+   handler:'林護理師',ext:'#217',
+   quickAnswer:'💉 卡介苗接種時間是每月第二個禮拜五，上午9:00–11:00，跟其他幼兒疫苗時間不一樣喔！\n📅 建議出生滿5到8個月接種，最晚要在1歲前完成。\n🏥 如果這個時段不方便，下面也有其他合約診所可以選擇接種，記得事先電話確認門診時間喲！',
+   steps:['攜帶兒童健康手冊及健保卡','於本所公告接種時段前來接種','接種後依手冊紀錄追蹤'],
+   docs:['健保IC卡','兒童健康手冊'],
+   hours:'每月第二週週五 09:00–11:00（與其他幼兒常規疫苗接種時段不同，請特別留意）',
+   fee:'公費疫苗免費',
+   forms:[{name:'臺中市各區衛生所及醫療院所卡介苗(BCG)接種時間及地點',desc:'卡介苗建議接種時間為出生滿5–8個月，至遲1歲前完成；可查詢全市各區衛生所及醫療院所接種時段',link:'https://www.health.taichung.gov.tw/26198/26327/26565/1897691/26640/2516128'}],
+   hospitals:['恆欣小兒科診所 22737419（新平路一段108號，週日休診）','馮少雄小兒科診所 22783060（中平路121號，週六休診）','建志耳鼻喉科診所 22766899（中興路110號，週日休診）','卓小兒科診所 22769879（中興路51-2號，週四休診）','文貴旺診所 22794321（太平路326號，週日休診）','長安醫院 36113611（永平路一段9號，週日休診）','康祐診所 23931234（中山路1段220號，週六休診）','國軍臺中總醫院 23934191（中山路2段348號，週日休診）','幼康小兒科診所 22738885（中山路3段139號，週日休診）','蔡醫師小兒科診所 22770206（宜昌路556號，週三休診）','弘鑫耳鼻喉科診所 23933595（樹孝路202號，週日休診）','耀仁診所 23939815（樹孝路39-7號，週五休診）','家宜診所 23937373（樹孝路506號，週日休診）','禎宏診所 23959209（新興路22號，週日休診）','祥威新光耳鼻喉科兒科診所 23938119（育賢路350號，週三休診）','珞誠診所 23931514（立功路288號，週六休診）','宥苗診所 23934406（育賢路335號，週四休診）','怡馨親子診所 23938026（育賢路253號，週二、日休診）'],
+   note:'卡介苗屬於幼兒常規預防接種項目之一，但接種時段與其他疫苗不同，請務必確認本所公告時間；上方合約診所僅供參考，請務必事先電話確認門診時間'},
+
+  {id:'tb',name:'結核病防治（接觸者追蹤、LTBI治療）',badge:'badge-tb',badgeText:'傳染病',
+   keywords:['結核','TB','肺結核','接觸者','結核病','LTBI','潛伏結核'],
+   handler:'李護理師',ext:'#221',
+   quickAnswer:'這是結核病的接觸者追蹤跟潛伏結核（LTBI）治療業務，案件通報後會建立接觸者名單、安排胸部X光，並追蹤治療進度。\n服務時間是週一到週五上班時間，全部免費。\n如果是要問卡介苗接種的時間地點，那是另一個項目，請問我「卡介苗」。',
+   steps:['案件通報受理','建立接觸者名單','安排胸部X光','追蹤LTBI治療'],
+   docs:['健保IC卡','個案通報單'],hours:'週一至週五 08:00–17:00',fee:'免費',
+   forms:[],
+   hospitals:[],note:'卡介苗接種請見「卡介苗接種」項目'},
+];
+
+const DISTRICTS=[
+  {handler:'李護理師',ext:'#221',areas:[{name:'新吉里',pop:6737},{name:'光明里',pop:4284},{name:'光華里',pop:5999}]},
+  {handler:'溫護理師',ext:'#215',areas:[{name:'新福里',pop:8976},{name:'新光里',pop:9351}]},
+  {handler:'黃護理師',ext:'#222',areas:[{name:'東和里',pop:3234},{name:'成功里',pop:4467},{name:'福隆里',pop:4128},{name:'建國里',pop:3038},{name:'建興里',pop:3147}]},
+  {handler:'林護理師',ext:'#237',areas:[{name:'宜昌里',pop:5629},{name:'坪林里',pop:3677},{name:'勸益里',pop:2571},{name:'聖和里',pop:1658},{name:'頭汴里',pop:1896},{name:'東汴里',pop:1152}]},
+  {handler:'蔡護理師',ext:'#218',areas:[{name:'中山里',pop:4433},{name:'豐年里',pop:4775},{name:'東平里',pop:4864},{name:'永平里',pop:4752}]},
+  {handler:'吳護理師',ext:'#219',areas:[{name:'新高里',pop:14061},{name:'新城里',pop:9420}]},
+  {handler:'莊護理師',ext:'#216',areas:[{name:'中興里',pop:3548},{name:'中政里',pop:4073},{name:'中平里',pop:4638},{name:'太平里',pop:5796}]},
+  {handler:'黃護理師',ext:'#238',areas:[{name:'興隆里',pop:3714},{name:'光隆里',pop:3555},{name:'永隆里',pop:2946},{name:'德隆里',pop:5698},{name:'黃竹里',pop:578}]},
+  {handler:'黃護理師',ext:'#214',areas:[{name:'新興里',pop:8474},{name:'新坪里',pop:9768}]},
+  {handler:'林護理師',ext:'#217',areas:[{name:'永成里',pop:8428},{name:'長億里',pop:8412},{name:'平安里',pop:2491}]},
+  {handler:'廖護理師',ext:'#223',areas:[{name:'宜欣里',pop:7230},{name:'宜佳里',pop:7037},{name:'大興里',pop:2749}]},
+];
+
+const DISTRICT_TEXT=DISTRICTS.map(d=>`${d.handler} 分機${d.ext}：${d.areas.map(a=>a.name).join('、')}`).join('\n');
+const SOP=DB.map(d=>`【${d.name}】承辦：${d.handler} 分機${d.ext}　時間：${d.hours}　費用：${d.fee}　步驟：${d.steps.join('→')}　文件：${(d.docs||[]).join('、')}${d.forms&&d.forms.length?'　表單：'+d.forms.map(f=>f.name).join('、'):''}${d.hospitals&&d.hospitals.length?'　合約院所：'+d.hospitals.join('、'):''}${d.note?'　備註：'+d.note:''}`).join('\n');
+
+function matchItems(q){
+  if(!q)return[];
+  const lq=q.toLowerCase().trim();
+  const scored=[];
+  DB.forEach(item=>{
+    let score=0;
+    if(item.name.toLowerCase()===lq)score=100;
+    else if(item.name.toLowerCase().includes(lq))score=80;
+    else item.keywords.forEach(k=>{
+      if(k===lq)score=Math.max(score,70);
+      else if(k.includes(lq)||lq.includes(k))score=Math.max(score,50);
+    });
+    if(score>0)scored.push({item,score});
+  });
+  return scored.sort((a,b)=>b.score-a.score).map(s=>s.item);
+}
+
+function renderForms(forms){
+  if(!forms||!forms.length)return'';
+  const vis=forms.filter(f=>f.desc||f.link);
+  if(!vis.length)return'';
+  return`<div class="forms-section"><div class="forms-title"><i class="ti ti-forms"></i> 相關表單 / 告知單</div>${vis.map(f=>`<div class="form-item"><i class="ti ti-file-description form-icon"></i><div><div class="form-name">${f.name}</div>${f.desc?`<div class="form-desc">${f.desc}</div>`:''} ${f.link?`<a class="form-link" href="${f.link}" target="_blank"><i class="ti ti-external-link" style="font-size:13px"></i> 開啟 / 下載表單</a>`:''}</div></div>`).join('')}</div>`;
+}
+
+function renderHospitals(h){
+  if(!h||!h.length)return'';
+  return`<div class="hospital-section"><div class="hospital-title"><i class="ti ti-stethoscope"></i> 合約院所</div><div class="hospital-list">${h.map(x=>`<span class="hospital-tag">${x}</span>`).join('')}</div></div>`;
+}
+
+function renderCards(items,cid){
+  const el=document.getElementById(cid);
+  if(!items.length){el.innerHTML=`<div class="empty"><i class="ti ti-search-off" style="font-size:32px;display:block;margin:0 auto 10px;color:var(--pk200)"></i>查無相關業務<br>請嘗試其他關鍵字，或撥打 <strong>04-23938083</strong></div>`;return;}
+  el.innerHTML=items.map(item=>{
+    const docsRow=item.docs&&item.docs.length?`<div class="info-row"><span class="info-label"><i class="ti ti-file-text"></i> 應備文件</span><div><div class="docs-list">${item.docs.map(d=>`<span class="doc-tag">${d}</span>`).join('')}</div></div></div>`:'';
+    const stepsRow=item.steps&&item.steps.length?`<div class="info-row"><span class="info-label"><i class="ti ti-list-check"></i> 辦理步驟</span><span class="info-val">${item.steps.map((s,i)=>`${i+1}. ${s}`).join('<br>')}</span></div>`:'';
+    const noteRow=item.note?`<div class="info-row"><span class="info-label"><i class="ti ti-alert-circle"></i> 備註</span><span class="info-val" style="color:var(--pk600);font-size:14px">${item.note}</span></div>`:'';
+    return`<div class="result-card"><div class="result-header"><span class="result-badge ${item.badge}">${item.badgeText}</span><span class="result-name">${item.name}</span></div><div class="result-body"><div class="info-row"><span class="info-label"><i class="ti ti-user"></i> 承辦人</span><span class="handler-chip"><i class="ti ti-user-circle" style="font-size:17px"></i>${item.handler}<span class="ext-badge">分機 ${item.ext}</span></span></div><div class="info-row"><span class="info-label"><i class="ti ti-clock"></i> 服務時間</span><span class="info-val">${item.hours}</span></div>${stepsRow}${docsRow}<div class="info-row"><span class="info-label"><i class="ti ti-coin"></i> 費用</span><span class="info-val fee">${item.fee}</span></div>${noteRow}${renderForms(item.forms)}${renderHospitals(item.hospitals)}</div></div>`;
+  }).join('');
+}
+
+function doMainSearch(){
+  const q=document.getElementById('main-q').value.trim();
+  if(!q)return;
+  document.getElementById('home-panel').style.display='none';
+  document.getElementById('results-panel').style.display='';
+  document.getElementById('district-panel').style.display='none';
+  document.getElementById('ai-panel').style.display='none';
+  renderCards(matchItems(q),'main-results');
+}
+function quickMain(kw){document.getElementById('main-q').value=kw;doMainSearch();window.scrollTo({top:0,behavior:'smooth'});}
+function goHome(){
+  document.getElementById('home-panel').style.display='';
+  document.getElementById('results-panel').style.display='none';
+  document.getElementById('district-panel').style.display='none';
+  document.getElementById('ai-panel').style.display='none';
+  document.getElementById('main-q').value='';
+  document.getElementById('btn-district').classList.remove('active');
+  document.getElementById('btn-ai').classList.remove('active');
+}
+function setFunc(f){
+  document.getElementById('home-panel').style.display='none';
+  document.getElementById('results-panel').style.display='none';
+  document.getElementById('district-panel').style.display=f==='district'?'':'none';
+  document.getElementById('ai-panel').style.display=f==='ai'?'':'none';
+  document.getElementById('btn-district').classList.toggle('active',f==='district');
+  document.getElementById('btn-ai').classList.toggle('active',f==='ai');
+  if(f==='district')renderAllDistricts('');
+}
+function renderAllDistricts(highlight){
+  document.getElementById('all-districts').innerHTML=DISTRICTS.map(d=>{
+    const total=d.areas.reduce((s,a)=>s+a.pop,0);
+    return`<div class="district-card"><div class="district-header"><div class="district-name"><i class="ti ti-user-circle" style="font-size:19px"></i>${d.handler} 分機 ${d.ext}</div><span class="district-ext">${d.ext}</span></div><div class="district-body"><div class="village-grid">${d.areas.map(a=>{const hit=highlight&&a.name.includes(highlight);return`<span class="village-tag${hit?' highlight':''}" onclick="quickDistrict('${a.name}')">${a.name} <span style="font-size:12px;opacity:0.7">${a.pop.toLocaleString()}</span></span>`;}).join('')}</div><div class="district-pop">負責人口數：約 ${total.toLocaleString()} 人</div></div></div>`;
+  }).join('');
+}
+function doDistrictSearch(){
+  const q=document.getElementById('district-q').value.trim();
+  const hit=document.getElementById('district-hit');
+  if(!q){hit.innerHTML='';renderAllDistricts('');return;}
+  const results=[];
+  DISTRICTS.forEach(d=>d.areas.forEach(a=>{if(a.name.includes(q)||q.includes(a.name.replace('里','')))results.push({...a,handler:d.handler,ext:d.ext});}));
+  hit.innerHTML=results.length
+    ?results.map(r=>`<div class="result-hit"><i class="ti ti-map-pin" style="color:var(--pk400)"></i> <strong>${r.name}</strong> 的地段護理師為 <span style="font-weight:500">${r.handler}</span> <span class="ext-badge" style="font-size:14px;margin-left:4px">${r.ext}</span><br><span style="color:var(--pk600);font-size:14px">（人口約 ${r.pop.toLocaleString()} 人）</span></div>`).join('')
+    :`<div class="empty" style="padding:1rem">查無「${q}」，請確認里名或撥打 04-23938083</div>`;
+  renderAllDistricts(q);
+}
+function quickDistrict(name){document.getElementById('district-q').value=name;doDistrictSearch();}
+
+/* ===== AI 問答助理（純前端關鍵字比對，不呼叫外部AI，無金鑰無費用） ===== */
+const STOPWORDS=['請問','請','我','要','去','哪裡','哪','怎麼','怎样','如何','的','是','在','嗎','呢','想','可以','要去','要怎麼','要怎样','辦理','辦','一下','幫我','需要','麻煩','謝謝','想問','想要'];
+
+function tokenize(q){
+  let s=q;
+  STOPWORDS.forEach(w=>{s=s.split(w).join(' ');});
+  return s.split(/[\s,，。？?！!、]+/).filter(t=>t.length>=1);
+}
+
+function smartMatch(q){
+  if(!q||!q.trim())return[];
+  const lq=q.toLowerCase().trim();
+  let cleaned=lq;
+  STOPWORDS.forEach(w=>{cleaned=cleaned.split(w).join('');});
+  const scored=[];
+  DB.forEach(item=>{
+    let score=0;
+    const lname=item.name.toLowerCase();
+    if(lname===lq)score=100;
+    else if(lname.includes(lq)||lq.includes(lname))score=Math.max(score,75);
+    let kwScoreSum=0;
+    item.keywords.forEach(k=>{
+      const lk=k.toLowerCase();
+      if(lk===lq)score=Math.max(score,90);
+      else if(lq.includes(lk)||lk.includes(lq)){
+        score=Math.max(score,60);
+      }
+      if(cleaned.includes(lk)&&lk.length>=2){
+        kwScoreSum+=lk.length*lk.length;
+      }
+    });
+    // 將清理過的句子拆成所有長度2~4的連續子字串，比對是否出現在業務名稱中
+    for(let len=4;len>=2;len--){
+      for(let i=0;i+len<=cleaned.length;i++){
+        const sub=cleaned.slice(i,i+len);
+        if(lname.includes(sub)){
+          kwScoreSum+=len*len*1.5;
+        }
+      }
+    }
+    score+=kwScoreSum*3;
+    if(score>0)scored.push({item,score});
+  });
+  return scored.sort((a,b)=>b.score-a.score).slice(0,3).map(s=>s.item);
+}
+
+function parseHospitalEntry(s){
+  // 格式1：名稱 電話（地址，備註） 例：恆欣小兒科診所 22737419（新平路一段108號，週日休診）
+  let m=s.match(/^(.+?)\s+([\d-]+)（(.+?)）$/);
+  if(m){
+    const addrParts=m[3].split('，');
+    return{name:m[1],phone:m[2],addr:addrParts[0],note:addrParts.slice(1).join('，')};
+  }
+  // 格式2：名稱 電話 例：鬱心身心診所 04-22780799
+  m=s.match(/^(.+?)\s+([\d-]+)$/);
+  if(m){
+    return{name:m[1],phone:m[2],addr:'',note:''};
+  }
+  // 格式3：名稱（備註） 例：大明牙醫診所（大里）
+  m=s.match(/^(.+?)（(.+?)）$/);
+  if(m){
+    return{name:m[1],phone:'',addr:'',note:m[2]};
+  }
+  // 格式4：純名稱 例：衛生福利部臺中醫院
+  return{name:s,phone:'',addr:'',note:''};
+}
+
+function renderHospitalTable(hospitals){
+  if(!hospitals||!hospitals.length)return'';
+  const rows=hospitals.map(parseHospitalEntry);
+  const hasPhone=rows.some(r=>r.phone);
+  const hasAddr=rows.some(r=>r.addr);
+  const hasNote=rows.some(r=>r.note);
+  let html='<table class="chat-hosp-table"><tr><th>院所名稱</th>'+(hasPhone?'<th>電話</th>':'')+(hasAddr?'<th>地址</th>':'')+(hasNote?'<th>備註</th>':'')+'</tr>';
+  rows.forEach(r=>{
+    html+=`<tr><td>${r.name}</td>${hasPhone?`<td>${r.phone||'—'}</td>`:''}${hasAddr?`<td>${r.addr||'—'}</td>`:''}${hasNote?`<td>${r.note||'—'}</td>`:''}</tr>`;
+  });
+  html+='</table>';
+  return html;
+}
+
+function formatAnswer(item){
+  let html=item.quickAnswer?item.quickAnswer.replace(/\n/g,'<br>'):`<strong>${item.name}</strong><br>承辦人：${item.handler}　分機 ${item.ext}<br>服務時間：${item.hours}`;
+  if(item.hospitals&&item.hospitals.length){
+    html+='<br>'+renderHospitalTable(item.hospitals);
+  }
+  if(item.forms&&item.forms.length){
+    item.forms.forEach(f=>{
+      if(f.link)html+=`<br>🔗 <a href="${f.link}" target="_blank" style="color:var(--pk600);text-decoration:underline">${f.name}</a>`;
+    });
+  }
+  return html;
+}
+
+function appendMsg(html,who){
+  const msgs=document.getElementById('chat-msgs');
+  msgs.innerHTML+=`<div class="msg ${who==='user'?'msg-user':'msg-ai'}">${html}</div>`;
+  msgs.scrollTop=msgs.scrollHeight;
+}
+
+function answerQuery(q){
+  appendMsg(q.replace(/</g,'&lt;'),'user');
+  // 先檢查是否為地段／里名查詢
+  const villageHit=[];
+  DISTRICTS.forEach(d=>d.areas.forEach(a=>{
+    if(q.includes(a.name)||q.includes(a.name.replace('里','')))villageHit.push({...a,handler:d.handler,ext:d.ext});
+  }));
+  if(villageHit.length){
+    let html=villageHit.map(r=>`您家「${r.name}」的地段護理師是 <strong>${r.handler}</strong>，分機 ${r.ext}。`).join('<br>');
+    appendMsg(html,'ai');
+    return;
+  }
+  if(/哪個護理師|地段護理師|我家.*負責|負責.*護理師/.test(q)){
+    appendMsg('請告訴我您家所在的里名（例如：新吉里、中山里），我幫您查詢負責的地段護理師。','ai');
+    return;
+  }
+  // 疫苗／預防針類模糊問題，先反問大人或小孩
+  const vaccineGeneric=/^(.*?)(打預防針|打疫苗|預防針|疫苗|打針)(.*?)$/;
+  const vaccineSpecific=/新冠|covid|肺炎鏈球菌|流感|卡介苗|bcg|13價|23價|腸病毒|常規/i;
+  if(vaccineGeneric.test(q)&&!vaccineSpecific.test(q)){
+    appendMsg('請問您要問的是大人還是小孩要打的疫苗呢？<br><br><span class="chat-quickbtn" onclick="sendChatQuick(\'大人\')">大人疫苗</span> <span class="chat-quickbtn" onclick="sendChatQuick(\'小孩\')">小孩疫苗</span>','ai');
+    return;
+  }
+  if(/^大人$|^成人$/.test(q.trim())){
+    appendMsg('大人（成人）的疫苗有3種：新冠疫苗、肺炎鏈球菌疫苗、流感疫苗。<br>請問您想問哪一種？<br><br><span class="chat-quickbtn" onclick="sendChatQuick(\'新冠疫苗\')">新冠疫苗</span> <span class="chat-quickbtn" onclick="sendChatQuick(\'肺炎鏈球菌疫苗\')">肺炎鏈球菌疫苗</span> <span class="chat-quickbtn" onclick="sendChatQuick(\'流感疫苗\')">流感疫苗</span>','ai');
+    return;
+  }
+  if(/^小孩$|^兒童$|^幼兒$/.test(q.trim())){
+    appendMsg('小孩的疫苗主要是每週二、三的常規疫苗，卡介苗則是每月第二週週五，時間不一樣喔。<br>請問您想問哪一種？<br><br><span class="chat-quickbtn" onclick="sendChatQuick(\'常規疫苗\')">常規疫苗</span> <span class="chat-quickbtn" onclick="sendChatQuick(\'卡介苗\')">卡介苗</span> <span class="chat-quickbtn" onclick="sendChatQuick(\'流感疫苗\')">流感疫苗</span>','ai');
+    return;
+  }
+  // 駕照體檢類模糊問題，先反問一般或高齡
+  const licenseGeneric=/^(.*?)(駕照|機車體檢|汽車體檢|考照體檢)(.*?)$/;
+  const licenseSpecific=/高齡|70歲|75歲|認知功能|一般駕照|機車駕照體檢|汽機車駕照體檢/;
+  if(licenseGeneric.test(q)&&!licenseSpecific.test(q)){
+    appendMsg('請問是要辦一般駕照體檢，還是70歲以上的高齡駕駛換照呢？<br><br><span class="chat-quickbtn" onclick="sendChatQuick(\'一般駕照體檢\')">一般駕照體檢</span> <span class="chat-quickbtn" onclick="sendChatQuick(\'高齡駕駛換照\')">高齡駕駛換照</span>','ai');
+    return;
+  }
+  const results=smartMatch(q);
+  if(!results.length){
+    appendMsg(`不好意思，沒有找到「${q}」相關的業務資料。<br>您可以換個說法再問一次，或撥打 <strong>04-23938083</strong> 由專人協助。`,'ai');
+    return;
+  }
+  appendMsg(formatAnswer(results[0]),'ai');
+}
+
+function sendChatQuick(q){
+  document.getElementById('chat-in').value=q;
+  sendChat();
+}
+
+function askPreset(q){answerQuery(q);}
+
+function sendChat(){
+  const inp=document.getElementById('chat-in');
+  const q=inp.value.trim();
+  if(!q)return;
+  inp.value='';
+  answerQuery(q);
+}
+
+</script>
+</body>
+</html>
