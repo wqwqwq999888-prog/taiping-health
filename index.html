@@ -113,9 +113,10 @@ body{font-family:var(--font-sans);font-size:17px;background:#fafafa;color:var(--
 .chat-hosp-table tr:last-child td{border-bottom:none}
 .chat-hosp-table tr:nth-child(even){background:var(--pk50)}
 .ai-chip:hover{background:var(--pk100)}
-.chat-input-row{display:flex}
-.chat-input-row input{flex:1;padding:13px 15px;border:none;background:#fff;font-size:15px;color:var(--color-text-primary);outline:none;border-top:1px solid var(--pk100)}
-.chat-input-row button{padding:13px 18px;background:var(--pk400);color:#fff;border:none;border-top:1px solid var(--pk400);cursor:pointer;font-size:16px}
+.chat-input-row{display:flex;gap:8px;padding:10px 12px;background:#fff;border-top:1px solid var(--pk100)}
+.chat-input-row input{flex:1;padding:11px 15px;border:1.5px solid var(--pk100);border-radius:22px;background:#fdf6f8;font-size:15px;color:var(--color-text-primary);outline:none;}
+.chat-input-row input:focus{border-color:var(--pk400);background:#fff}
+.chat-input-row button{width:44px;height:44px;border-radius:50%;background:var(--pk400);color:#fff;border:none;cursor:pointer;font-size:20px;display:flex;align-items:center;justify-content:center;flex-shrink:0;transition:background .15s}
 .chat-input-row button:hover{background:var(--pk600)}
 .empty{text-align:center;padding:2rem;color:var(--pk600);font-size:16px;line-height:1.8}
 
@@ -144,33 +145,27 @@ body{font-family:var(--font-sans);font-size:17px;background:#fafafa;color:var(--
   <div class="section-title"><i class="ti ti-bolt" aria-hidden="true"></i> 常見業務快速查詢</div>
   <div class="quick-grid">
     <div class="quick-btn" onclick="quickMain('幼兒專責醫師')"><span class="qi ti ti-stethoscope" aria-hidden="true"></span>幼兒專責醫師</div>
-    <div class="quick-btn" onclick="quickMain('幼兒預防注射合約診所')"><span class="qi ti ti-syringe" aria-hidden="true"></span>幼兒預防注射診所</div>
+    <div class="quick-btn" onclick="quickMain('幼兒預防注射合約診所')"><span class="qi ti ti-syringe" aria-hidden="true"></span>幼兒預防注射</div>
     <div class="quick-btn" onclick="quickMain('腸病毒疫苗')"><span class="qi ti ti-virus" aria-hidden="true"></span>腸病毒疫苗補助</div>
+    <div class="quick-btn" onclick="quickMain('疫苗接種')"><span class="qi ti ti-vaccine" aria-hidden="true"></span>疫苗接種</div>
     <div class="quick-btn" onclick="quickMain('兒童發展篩檢')"><span class="qi ti ti-baby-carriage" aria-hidden="true"></span>兒童發展篩檢</div>
     <div class="quick-btn" onclick="quickMain('唐氏症')"><span class="qi ti ti-dna" aria-hidden="true"></span>唐氏症篩檢</div>
     <div class="quick-btn" onclick="quickMain('婚後孕前')"><span class="qi ti ti-heart" aria-hidden="true"></span>婚後孕前健檢</div>
     <div class="quick-btn" onclick="quickMain('新住民')"><span class="qi ti ti-world" aria-hidden="true"></span>新住民孕婦補助</div>
     <div class="quick-btn" onclick="quickMain('特殊群體生育')"><span class="qi ti ti-clipboard-heart" aria-hidden="true"></span>特殊群體生育補助</div>
     <div class="quick-btn" onclick="quickMain('銀髮假牙')"><span class="qi ti ti-tooth" aria-hidden="true"></span>銀髮假牙補助</div>
-    <div class="quick-btn" onclick="quickMain('預防針')"><span class="qi ti ti-vaccine" aria-hidden="true"></span>預防針總覽</div>
-    <div class="quick-btn" onclick="quickMain('新冠疫苗')"><span class="qi ti ti-shield-plus" aria-hidden="true"></span>新冠疫苗</div>
-    <div class="quick-btn" onclick="quickMain('肺炎鏈球菌')"><span class="qi ti ti-lungs" aria-hidden="true"></span>肺炎鏈球菌疫苗</div>
-    <div class="quick-btn" onclick="quickMain('流感疫苗')"><span class="qi ti ti-flask" aria-hidden="true"></span>流感疫苗</div>
     <div class="quick-btn" onclick="quickMain('戒菸')"><span class="qi ti ti-smoking-no" aria-hidden="true"></span>戒菸門診</div>
     <div class="quick-btn" onclick="quickMain('成人健檢')"><span class="qi ti ti-activity" aria-hidden="true"></span>成人健檢</div>
-    <div class="quick-btn" onclick="quickMain('婦癌篩檢')"><span class="qi ti ti-ribbon" aria-hidden="true"></span>婦癌篩檢</div>
-    <div class="quick-btn" onclick="quickMain('大腸癌')"><span class="qi ti ti-microscope" aria-hidden="true"></span>大腸癌篩檢</div>
+    <div class="quick-btn" onclick="quickMain('癌症篩檢')"><span class="qi ti ti-ribbon" aria-hidden="true"></span>癌症篩檢</div>
     <div class="quick-btn" onclick="quickMain('心理')"><span class="qi ti ti-brain" aria-hidden="true"></span>心理諮商</div>
     <div class="quick-btn" onclick="quickMain('長照')"><span class="qi ti ti-wheelchair" aria-hidden="true"></span>長照服務</div>
     <div class="quick-btn" onclick="quickMain('弱勢就醫')"><span class="qi ti ti-building-hospital" aria-hidden="true"></span>弱勢就醫補助</div>
     <div class="quick-btn" onclick="quickMain('汽機車駕照體檢')"><span class="qi ti ti-license" aria-hidden="true"></span>汽機車駕照體檢</div>
     <div class="quick-btn" onclick="quickMain('高齡駕駛換照')"><span class="qi ti ti-steering-wheel" aria-hidden="true"></span>高齡駕駛換照</div>
-    <div class="quick-btn" onclick="quickMain('復康巴士')"><span class="qi ti ti-bus" aria-hidden="true"></span>復康巴士</div>
     <div class="quick-btn" onclick="quickMain('食品登錄')"><span class="qi ti ti-clipboard-list" aria-hidden="true"></span>食品業者登錄</div>
     <div class="quick-btn" onclick="quickMain('行政相驗')"><span class="qi ti ti-file-certificate" aria-hidden="true"></span>行政相驗</div>
-    <div class="quick-btn" onclick="quickMain('美沙冬')"><span class="qi ti ti-pill" aria-hidden="true"></span>美沙冬治療</div>
+    <div class="quick-btn" onclick="quickMain('美沙冬')"><span class="qi ti ti-pill" aria-hidden="true"></span>美沙冬營養費</div>
     <div class="quick-btn" onclick="quickMain('器捐安寧')"><span class="qi ti ti-heart-handshake" aria-hidden="true"></span>器捐 / 安寧</div>
-    <div class="quick-btn" onclick="quickMain('卡介苗')"><span class="qi ti ti-vaccine" aria-hidden="true"></span>卡介苗接種</div>
     <div class="quick-btn" onclick="quickMain('結核病')"><span class="qi ti ti-lungs" aria-hidden="true"></span>結核病防治</div>
   </div>
 </div>
@@ -200,7 +195,7 @@ body{font-family:var(--font-sans);font-size:17px;background:#fafafa;color:var(--
     </div>
     <div class="chat-input-row">
       <input type="text" id="chat-in" placeholder="請輸入您的問題，例如：卡介苗去哪打？" onkeydown="if(event.key==='Enter')sendChat()" />
-      <button onclick="sendChat()" aria-label="送出"><i class="ti ti-send" aria-hidden="true"></i></button>
+      <button onclick="sendChat()" aria-label="送出" style="width:auto;padding:0 18px;border-radius:22px;gap:6px;font-size:15px;font-weight:600;display:flex;align-items:center"><i class="ti ti-send" aria-hidden="true"></i> 送出</button>
     </div>
   </div>
 </div>
@@ -305,16 +300,31 @@ const DB=[
   {id:'dental',name:'65歲以上銀髮族假牙裝置補助',badge:'badge-long',badgeText:'長照',
    keywords:['假牙','銀髮','老人','65歲','牙齒','義齒','銀髮假牙'],
    handler:'廖護理師',ext:'#223',
-   quickAnswer:'這項補助是給設籍臺中市滿1年、滿65歲、缺牙嚴重，而且所得稅率5%以下的長輩，每人終身可以申請1次。\n請帶身分證、健保卡、戶籍謄本和最近一年的所得稅核定通知書來衛生所申請，審查通過後再到合約牙醫診所裝置。\n如果是低收入戶請洽社會局，原住民請洽原民會，一般民眾洽分機223廖護理師。',
-   steps:['確認資格（設籍台中市滿1年且滿65歲、缺牙極重度/重度、所得稅率5%以下）','備齊文件至衛生所申請','審查委員會核准後至合約牙醫診所裝置'],
+   quickAnswer:'這項補助提供給同時符合以下條件的長輩：\n①設籍臺中市且連續設籍滿1年\n②年滿65歲\n③缺牙達重度或極重度（由牙醫師評估）\n④綜合所得稅率5%以下（即年所得約56萬以下）\n每人終身可申請1次。\n請帶身分證、健保卡、戶籍謄本和最近一年的所得稅核定通知書來衛生所申請，審查通過後再到合約牙醫診所裝置。\n如果是低收入戶請洽社會局，原住民請洽原民會，一般民眾洽分機223廖護理師。',
+   steps:['確認資格（設籍台中市滿1年、年滿65歲、缺牙重度/極重度、綜所稅率5%以下）','備齊文件至衛生所申請','審查委員會核准後至合約牙醫診所裝置'],
    docs:['健保IC卡','身分證','戶籍謄本','最近一年所得稅核定通知書'],
    hours:'週一至週五 08:00–17:00',fee:'活動式假牙補助，每人終身1次（非現金給付）',
-   forms:[{name:'114年度65歲以上銀髮族假牙裝置補助計畫說明',desc:'計畫期程：114年1月1日至114年12月31日，或預算用完為止',link:null}],
-   hospitals:['大明牙醫診所（大里）','金山牙醫診所（大里）','衛生福利部豐原醫院','長青牙醫診所（豐原）','藍牙醫診所（潭子）','健宏牙醫診所（潭子）','台中慈濟醫院','勤美牙醫診所（龍井）'],
-   note:'低收入戶請洽社會局；原住民請洽原住民族事務委員會'},
+   forms:[
+     {name:'115年度65歲以上銀髮族假牙裝置補助計畫說明',desc:'計畫期程：115年1月1日至115年12月31日，或預算用完為止',link:'https://drive.google.com/file/d/1w-9RRT8n-amx8m1JCZ6GUB67hbL2AqaD/view?usp=sharing'},
+     {name:'合約牙醫診所名冊（115年05月28日更新）',desc:'全臺中市合約牙醫診所清單，請找離您最近的診所',link:'https://drive.google.com/file/d/1TaX8XAco_ZFCPD35XQliMiV5FUkGPOx9/view?usp=sharing'}
+   ],
+   hospitals:[
+     '新光牙醫診所 23951466（振福路216號）',
+     '益詮牙醫診所 23982889（振福路536號）',
+     '忠信牙醫診所 23925668（中山路一段382號）',
+     '中悅牙醫診所 22702998（宜昌路508號）',
+     '千大牙醫診所 22701054（太平路755號）',
+     '全友牙醫診所 23938365（樹孝路71號）',
+     '太平劉牙醫診所 22799814（太平路565號）',
+     '潔安牙醫診所 22756479（東平路617號）',
+     '勤益牙醫診所 23960099（中山路一段270號）',
+     '太平新品牙醫診所 23936000（中山路三段2-9號）',
+     '和研牙醫診所 23936488（中山路三段2-1號）'
+   ],
+   note:'低收入戶請洽社會局；原住民請洽原住民族事務委員會。下方為太平區合約院所，完整名冊請點上方連結下載。'},
 
   {id:'vacc',name:'兒童常規預防接種（3歲以下幼兒催注）',badge:'badge-women',badgeText:'預防接種',
-   keywords:['預防接種','幼兒','疫苗','打針','接種','3歲','催注','預防針','兒童預防針','小朋友疫苗','常規疫苗'],
+   keywords:['預防接種','幼兒','疫苗','打針','接種','3歲','催注','預防針','兒童預防針','小朋友疫苗','常規疫苗','疫苗接種'],
    handler:'林護理師',ext:'#217',
    quickAnswer:'👶 幼兒常規疫苗接種時間是每週二、三上午8:30–11:30。\n📓 請帶兒童健康手冊和健保卡來，現場醫師評估後再注射，公費疫苗免費喔！\n💡 卡介苗時間不一樣，是每月第二個禮拜五，問我「卡介苗」就會告訴您詳細時間。',
    steps:['填寫預防接種評估單','登記→醫師評估','護理指導→注射'],
@@ -323,133 +333,198 @@ const DB=[
    fee:'公費疫苗免費',forms:[],hospitals:[],note:'「預防針」泛稱：幼兒常規疫苗請看本項、卡介苗請見獨立項目；成人流感、肺炎鏈球菌、新冠疫苗請見下方「成人預防接種」相關項目'},
 
   {id:'covid_vaccine',name:'COVID-19新冠疫苗接種',badge:'badge-screen',badgeText:'預防針(成人)',
-   keywords:['新冠','新冠疫苗','COVID','COVID-19','肺炎疫苗','新冠肺炎疫苗','預防針','成人預防針','莫德納','Novavax'],
+   keywords:['新冠','新冠疫苗','COVID','COVID-19','肺炎疫苗','新冠肺炎疫苗','預防針','成人預防針','莫德納','Novavax','疫苗接種'],
    handler:'吳護理師',ext:'#219',
-   quickAnswer:'💉 新冠疫苗是成人接種的疫苗喔。\n🕐 接種時間是週一至週五上午8:30–11:30。\n📋 公費對象依公告分階段開放，要確認您是否符合資格，撥打衛生所電話由總機轉接即可。\n📝 也可以事先下載接種須知意願書填好再來，現場會比較快喲！',
+   quickAnswer:'💉 新冠疫苗是成人接種的疫苗喔。\n🕐 接種時間是週一至週五上午8:30–11:30。\n📋 公費對象依公告分階段開放，建議先打分機219問吳護理師確認您是否符合資格。\n📝 也可以事先下載接種須知意願書填好再來，現場會比較快喲！',
    steps:['確認公費接種資格','填寫接種須知暨接種評估及意願書','至本所或合約院所接種'],
-   docs:['健保IC卡','接種須知暨接種評估及意願書（可現場填寫或事先下載填妥）'],
+   docs:['健保IC卡'],
    hours:'週一至週五 08:30–11:30',
    fee:'公費對象免費；詳細公費對象請洽承辦人員',
    forms:[{name:'COVID-19 疫苗接種須知、接種評估及意願書',desc:'疾病管制署提供各廠牌疫苗接種須知與意願書下載，可事先填寫攜帶',link:'https://www.cdc.gov.tw/Category/MPage/4P2oowuEp0CoDlob356s8g'}],
    hospitals:[],note:''},
 
   {id:'pneumo_vaccine',name:'肺炎鏈球菌疫苗接種',badge:'badge-screen',badgeText:'預防針(成人)',
-   keywords:['肺炎鏈球菌','肺炎疫苗','13價','23價','PCV13','PPV23','長者疫苗','預防針','成人預防針'],
-   handler:'溫護理師',ext:'#215',
-   quickAnswer:'💉 肺炎鏈球菌疫苗是給65歲以上長輩、55-64歲原住民，或60-64歲設籍臺中市市民接種的。\n🕐 接種時間是週一至週五上午8:30–11:30。\n💊 65歲以上可公費接種13價和23價兩種，要間隔1年；60-64歲市民由市府補助23價一劑，用罄為止。\n🪪 原住民朋友記得帶戶口名簿或戶籍謄本，確認資格的話撥打衛生所電話由總機轉接即可喲！',
-   steps:['確認資格（65歲以上／55-64歲原住民／60-64歲市民／高風險對象）','攜帶證件至本所或合約院所接種','如為高風險對象，需間隔規定週數接種第二劑'],
-   docs:['健保IC卡','原住民請攜帶戶口名簿或戶籍謄本'],
+   keywords:['肺炎鏈球菌','肺炎疫苗','13價','23價','PCV13','PPV23','長者疫苗','預防針','成人預防針','疫苗接種'],
+   handler:'温護理師',ext:'#215',
+   quickAnswer:'💉 肺炎鏈球菌疫苗公費接種對象有4類：①65歲以上長輩 ②55-64歲原住民（需帶戶口名簿或戶籍謄本）③60-64歲設籍臺中市市民（市府補助23價一劑，用罄為止）④19-64歲高風險對象（需帶1年內疾病診斷書正本）。\n🕐 接種時間是週一至週五上午8:30–11:30。\n💊 65歲以上可公費接種13價和23價兩種，要間隔1年，有問題洽分機215温護理師！',
+   steps:['確認資格（65歲以上／55-64歲原住民／60-64歲市民／19-64歲高風險對象）','攜帶證件至本所或合約院所接種（高風險對象請攜帶1年內疾病診斷書正本）','如為高風險對象，需間隔規定週數接種第二劑'],
+   docs:['健保IC卡','原住民請攜帶戶口名簿或戶籍謄本','高風險對象請攜帶1年內疾病診斷書正本'],
    hours:'週一至週五 08:30–11:30',
    fee:'公費補助；60-64歲市民由市府補助23價疫苗一劑，用罄為止',
    forms:[{name:'肺炎鏈球菌疫苗接種相關資訊',desc:'65歲以上民眾公費接種13價及23價疫苗，兩劑需間隔1年；高風險對象接種PCV13後間隔8週再接種PPV23',link:'https://www.cdc.gov.tw/Category/MPage/zK8mS8V4oEfjRy8Dlv0yJw'}],
    hospitals:[],
-   note:'對象：65歲以上民眾／55-64歲原住民／60-64歲設籍臺中市市民／65歲以上高風險對象（脾臟功能缺損、先天或後天免疫不全、人工耳植入、腦脊髓液滲漏、惡性腫瘤接受免疫抑制劑或放射治療者、器官移植者）、機構住民及洗腎患者'},
+   note:'高風險對象（脾臟功能缺損、先天或後天免疫功能不全、人工耳植入、腦脊髓液滲漏、惡性腫瘤接受免疫抑制劑或放射治療者、器官移植者、機構住民及洗腎患者）需攜帶1年內疾病診斷書正本'},
 
   {id:'flu_vaccine',name:'流感疫苗接種',badge:'badge-screen',badgeText:'預防針(成人)',
-   keywords:['流感','流感疫苗','流行性感冒疫苗','公費流感','預防針','成人預防針','兒童流感疫苗'],
-   handler:'溫護理師',ext:'#215',
+   keywords:['流感','流感疫苗','流行性感冒疫苗','公費流感','預防針','成人預防針','兒童流感疫苗','疫苗接種'],
+   handler:'温護理師',ext:'#215',
    quickAnswer:'🤧 流感疫苗每年10月開始接種，依疾管署公告分階段開放公費對象。\n👨 大人接種時間是週一至週五上午8:30–11:30。\n👶 小孩接種時間是每週二、三上午8:30–11:30。\n💉 未滿9歲的小孩第一次接種要打2劑，中間要間隔4週以上喲！',
    steps:['確認是否為公費對象','每年10月起依疾管署公布分階段接種','未滿9歲兒童初次接種者，需接種2劑，間隔4週以上'],
    docs:['健保IC卡','兒童健康手冊（幼兒適用）'],
-   hours:'大人：週一至週五 08:30–11:30；小孩：每週二、三 08:30–11:30（每年10月起開始接種）',
+   hours:'【大人】週一至週五 08:30–11:30\n【小孩】每週二、三 08:30–11:30（每年10月起開始接種）',
    fee:'公費對象免費',
    forms:[{name:'流感疫苗接種資訊',desc:'流感疫苗保護力約一年，建議每年接種一劑；合約院所可至臺中市政府衛生局網站查詢',link:'https://www.cdc.gov.tw/Category/Page/yaQGBK5nX3xWxVdzsXaW3A'}],
    hospitals:[],note:'公費對象依疾管署每年公布分階段開放，請洽承辦人員確認最新對象範圍'},
 
   {id:'smoking_cessation',name:'戒菸門診',badge:'badge-admin',badgeText:'成人保健',
    keywords:['戒菸','戒菸門診','尼古丁','菸害防制','吸菸'],
-   handler:'溫護理師',ext:'#215',
-   quickAnswer:'戒菸門診每人每年可以補助2個療程，每療程8週，要在同一家院所90天內完成。\n只要有戒菸意願都可以來，連孕婦、青少年都可以接受衛教，藥品部分負擔全免。\n如果想先諮詢，也可以打免費專線0800-636363，或打分機215問溫護理師。',
-   steps:['尼古丁成癮度測試（4分以上）或平均每天吸菸10支以上，符合戒菸治療資格','有戒菸意願者皆可接受戒菸衛教（含孕婦、青少年、不適合用藥者）','每人每年補助2個療程（每療程8週），需於同一院所或藥局90天內完成'],
+   handler:'温護理師',ext:'#215',
+   quickAnswer:'戒菸門診每人每年可以補助2個療程，每療程8週，要在同一家院所90天內完成（若中途換院所則視同放棄該療程剩餘週數）。\n只要有戒菸意願都可以來，連孕婦、青少年都可以接受衛教，藥品部分負擔全免。\n如果想先諮詢，也可以打免費專線0800-636363，或打分機215問温護理師。',
+   steps:['戒菸治療資格：18歲以上健保對象，尼古丁成癮測試4分以上或平均每天吸菸10支以上','戒菸衛教對象：只要有戒菸意願皆可（含孕婦、青少年、不適合用藥者）','每人每年補助2個療程（每療程8週），需於同一院所或藥局90天內完成'],
    docs:['健保IC卡'],hours:'門診時間請來電洽詢',
    fee:'免收藥品部分負擔；免費戒菸諮詢專線 0800-636363',
    forms:[{name:'臺中市衛生局菸害防制專區',desc:'查詢戒菸治療補助及合約院所相關資訊',link:'https://www.health.taichung.gov.tw/26886/Nodelist'}],
    hospitals:[],note:''},
 
-  {id:'adult',name:'成人健檢及中老年業務',badge:'badge-screen',badgeText:'健檢',
-   keywords:['成人','健檢','健康檢查','40歲','65歲','三高','中老年','B肝','C肝','成人健檢'],
+  {id:'adult',name:'成人預防保健（成人健檢）',badge:'badge-screen',badgeText:'健檢',
+   keywords:['成人','健檢','健康檢查','40歲','65歲','三高','成人健檢','假日健檢','B肝','C肝','肝炎篩檢'],
    handler:'蔡護理師',ext:'#218',
-   quickAnswer:'成人健檢時間是每週一、五上午8點半到11點半，免費，但要記得前一晚12點後就不能再吃東西。\n40歲以上每3年可以做1次，65歲以上每年都可以做1次。\n請帶健保卡直接來掛號，有問題打分機218問蔡護理師。',
+   quickAnswer:'成人健檢時間是每週一、五上午8點半到11點半，免費，但要記得前一晚12點後就不能再吃東西。\n40歲以上每3年可以做1次，65歲以上每年都可以做1次。\n另外B型及C型肝炎篩檢：45-79歲民眾一生可免費篩檢各一次，有需要請一併詢問。\n請帶健保卡直接來掛號，有問題打分機218問蔡護理師。\n\n💡 假日也想做健檢？太平區有多家診所假日有提供成人健檢服務，請務必提前致電預約，並空腹8小時。',
    steps:['掛號','填寫健查表→一般檢查→抽血及驗尿','安排看報告','看報告、醫師診察評估'],
    docs:['健保IC卡'],hours:'週一、五 08:30–11:30（前一晚12時後禁食）',
    fee:'免費（40歲以上每3年1次；65歲以上每年1次）',
-   forms:[],hospitals:[],note:''},
+   forms:[
+     {name:'成人預防保健服務說明（國民健康署）',desc:'成人健檢補助資格、檢查項目及注意事項說明',link:'https://www.hpa.gov.tw/Pages/List.aspx?nodeid=189'},
+     {name:'臺中市假日成人預防保健服務醫療院所名單',desc:'太平區有多家診所假日提供成人健檢，請務必事先來電確認，並空腹8小時',link:'https://www.health.taichung.gov.tw/media/1358542/%E8%87%BA%E4%B8%AD%E5%B8%82%E5%81%87%E6%97%A5%E6%8F%90%E4%BE%9B%E6%88%90%E4%BA%BA%E9%A0%90%E9%98%B2%E4%BF%9D%E5%81%A5%E6%9C%8D%E5%8B%99%E9%86%AB%E7%99%82%E9%99%A2%E6%89%80%E5%90%8D%E5%96%AE.pdf'},
+     {name:'成人預防保健B、C型肝炎篩檢特約醫事機構名單',desc:'45-79歲民眾B型及C型肝炎篩檢一生各一次免費，查詢特約院所',link:'https://www.health.taichung.gov.tw/media/1282607/%E6%88%90%E4%BA%BA%E9%A0%90%E9%98%B2%E4%BF%9D%E5%81%A5b-c%E5%9E%8B%E8%82%9D%E7%82%8E%E7%AF%A9%E6%AA%A2%E7%89%B9%E7%B4%84%E9%86%AB%E4%BA%8B%E6%A9%9F%E6%A7%8B%E5%90%8D%E5%96%AE.pdf'}
+   ],
+   hospitals:[],
+   note:'⚠️ 假日院所服務時段不定，請務必先於週一至週五提前電話預約；檢查需空腹8小時，建議早上前往。'},
 
-  {id:'breast',name:'婦癌篩檢（乳癌、子宮頸癌、HPV）',badge:'badge-screen',badgeText:'篩檢',
-   keywords:['乳癌','子宮頸','HPV','婦癌','抹片','乳房','篩檢','婦癌篩檢'],
+  {id:'chronic_risk',name:'中老年業務（科學算病館・更年期衛教）',badge:'badge-screen',badgeText:'健康促進',
+   keywords:['科學算病','算病館','慢性病','更年期','荷爾蒙','停經','中老年','慢性疾病風險'],
+   handler:'蔡護理師',ext:'#218',
+   quickAnswer:'💡 想預測未來10年罹患慢性病的風險嗎？可以用「科學算病館」輸入您的健檢數據，預測冠心病、高血壓、腦中風、糖尿病、心血管不良事件等5種慢性疾病罹病風險（適用35-70歲，其他年齡僅供參考）。\n\n更年期不是疾病，是人生必經的自然過程。因女性荷爾蒙分泌不足，可能產生身心不適症狀。如有相關疑問，歡迎洽分機218蔡護理師。',
+   steps:['準備好健康檢查報告','進入科學算病館輸入數據','獲得個人化慢性病風險評估結果'],
+   docs:['近期健康檢查報告'],hours:'週一至週五 08:00–17:00',fee:'免費',
+   forms:[
+     {name:'科學算病館 慢性疾病風險評估平台',desc:'輸入健檢數據，預測10年內罹患冠心病、高血壓、腦中風、糖尿病、心血管不良事件風險（適用35-70歲）',link:'https://cdrc.hpa.gov.tw/hra-openservice-menupage.jsp?all'},
+     {name:'更年期衛教資訊',desc:'了解女性荷爾蒙變化及更年期相關身心症狀因應方式',link:'https://www.taipingphc.taichung.gov.tw/3925716/post'}
+   ],
+   hospitals:[],note:'科學算病館平台適用年齡35-70歲，其他年齡僅供參考'},
+
+  {id:'breast',name:'婦癌篩檢（乳癌、子宮頸癌）',badge:'badge-screen',badgeText:'篩檢',
+   keywords:['乳癌','子宮頸','HPV','婦癌','抹片','乳房','篩檢','婦癌篩檢','癌症篩檢'],
    handler:'林護理師',ext:'#237',
    quickAnswer:'乳癌篩檢是45到69歲每2年1次，子宮頸抹片是30歲以上每年1次，都是免費的。\n請先確認自己符合資格，再填轉介單到合約醫院或衛生所定點篩檢。\n預約和詳細時間可以打分機237問林護理師。',
    steps:['確認篩檢資格','填寫轉介單','至合約醫院或衛生所定點篩檢'],
    docs:['健保IC卡'],hours:'預約時間',
    fee:'免費（乳癌45–69歲每2年1次；子宮頸30歲以上每年1次）',
-   forms:[],hospitals:[],note:''},
+   forms:[
+     {name:'臺中市癌症篩檢醫療院所名冊',desc:'乳癌、子宮頸癌等各項篩檢合約院所查詢',link:'https://www.health.taichung.gov.tw/media/1418927/%E8%87%BA%E4%B8%AD%E5%B8%82%E7%99%8C%E7%97%87%E7%AF%A9%E6%AA%A2%E9%86%AB%E7%99%82%E9%99%A2%E6%89%80-0527.pdf'}
+   ],
+   hospitals:[],note:''},
+
+  {id:'hpv',name:'婦女人類乳突病毒（HPV）檢測',badge:'badge-screen',badgeText:'篩檢',
+   keywords:['HPV','人類乳突','乳突病毒','HPV檢測','子宮頸HPV','HPV篩檢','HPV補接種','癌症篩檢'],
+   handler:'林護理師',ext:'#237',
+   quickAnswer:'HPV（人類乳突病毒）檢測是子宮頸癌篩檢的重要工具，可至合約醫療院所接受檢測服務。\n如尚未完成HPV疫苗接種，也可至合約院所補接種。\n詳細資格與合約院所請洽分機237林護理師，或參考下方連結。',
+   steps:['確認資格','至合約醫療院所掛號接受HPV檢測','如需補接種HPV疫苗，請至合約接種院所'],
+   docs:['健保IC卡'],hours:'依合約院所門診時間',
+   fee:'依公費資格，請洽承辦人確認',
+   forms:[
+     {name:'臺中市婦女HPV檢測相關資訊',desc:'衛生局婦女人類乳突病毒檢測業務說明',link:'https://www.health.taichung.gov.tw/26198/26327/26904/2858601/2858710'},
+     {name:'HPV檢測服務醫療院所名單',desc:'臺中市婦女HPV檢測合約院所名冊',link:'https://www.health.taichung.gov.tw/media/1391125/%E8%87%BA%E4%B8%AD%E5%B8%82%E5%A9%A6%E5%A5%B3%E4%BA%BA%E9%A1%9E%E4%B9%B3%E7%AA%81%E7%97%85%E6%AF%92%E6%9F%A5%E6%96%87%E7%AF%A9%E6%AA%A2%E6%9C%8D%E5%8B%99%E9%86%AB%E7%99%82%E9%99%A2%E6%89%80%E5%90%8D%E5%96%AE.pdf'},
+     {name:'HPV疫苗補接種合約院所',desc:'尚未完成HPV疫苗接種者，可至合約院所補接種',link:'https://drive.google.com/file/d/1QwYmih_O6j6bX9oIpYXOD7jFXGNDWQ9o/view?usp=sharing'}
+   ],
+   hospitals:[],note:''},
 
   {id:'colon',name:'大腸直腸癌篩檢、口腔癌篩檢、LDCT肺癌篩檢',badge:'badge-screen',badgeText:'篩檢',
-   keywords:['大腸癌','大腸','直腸','口腔癌','檳榔','LDCT','肺癌','大腸癌篩檢'],
+   keywords:['大腸癌','大腸','直腸','口腔癌','檳榔','LDCT','肺癌','大腸癌篩檢','肺癌篩檢','癌症篩檢'],
    handler:'廖護理師',ext:'#223',
-   quickAnswer:'大腸癌篩檢是50到74歲每2年1次；口腔癌篩檢是30歲以上、有嚼檳榔或吸菸習慣的人每2年1次，都免費。\n大腸癌篩檢直接到窗口領採便盒帶回家採檢就好；口腔癌篩檢要填轉介單。\n服務時間是週一到週五上班時間，洽分機223廖護理師。',
-   steps:['確認篩檢資格','至窗口領取採便盒或填寫轉介單','完成篩檢後追蹤'],
+   quickAnswer:'【大腸癌】45-74歲每2年1次糞便潛血（有大腸癌家族史者可放寬至40-44歲）。\n【口腔癌】30歲以上有嚼檳榔（含已戒）或吸菸者、18歲以上有嚼檳榔原住民，每2年1次，都免費。\n【肺癌LDCT】有肺癌家族史或重度吸菸史者，每2年1次低劑量電腦斷層。\n大腸癌篩檢直接到窗口領採便盒帶回家採檢；口腔癌及肺癌篩檢請至合約院所，服務時間週一到週五上班時間，洽分機223廖護理師。',
+   steps:['確認篩檢資格','至窗口領取採便盒（大腸癌）或填寫轉介單（口腔癌/肺癌）','完成篩檢後追蹤'],
    docs:['健保IC卡'],hours:'週一至週五 08:00–17:00',
-   fee:'免費（大腸癌：50–74歲每2年1次；口腔癌：30歲以上有嚼檳榔/吸菸者每2年1次）',
-   forms:[],hospitals:[],note:''},
+   fee:'免費（大腸癌：45–74歲每2年1次；口腔癌：30歲以上有嚼檳榔/吸菸者每2年1次；肺癌LDCT：有家族史或重度吸菸史者每2年1次）',
+   forms:[
+     {name:'肺癌LDCT篩檢合約院所',desc:'有肺癌家族史或重度吸菸史者可申請低劑量電腦斷層篩檢，請查詢合約院所',link:'https://drive.google.com/file/d/1lAxI-cKBxJlO97M4A3k77S9qp5qGC6hs/view?usp=sharing'},
+     {name:'臺中市癌症篩檢醫療院所名冊',desc:'大腸癌、口腔癌、乳癌、子宮頸癌及肺癌各項篩檢合約院所查詢',link:'https://www.health.taichung.gov.tw/media/1418927/%E8%87%BA%E4%B8%AD%E5%B8%82%E7%99%8C%E7%97%87%E7%AF%A9%E6%AA%A2%E9%86%AB%E7%99%82%E9%99%A2%E6%89%80-0527.pdf'}
+   ],
+   hospitals:[],note:'大腸癌家族史：父母、子女或兄弟姊妹曾患有大腸癌者可提前至40歲申請'},
+
+  {id:'gastric',name:'胃癌防治・糞便抗原檢測胃幽門螺旋桿菌服務',badge:'badge-screen',badgeText:'篩檢',
+   keywords:['胃癌','幽門螺旋桿菌','幽門桿菌','HP菌','胃幽門','糞便抗原','胃癌篩檢','胃癌防治','癌症篩檢'],
+   handler:'莊護理師',ext:'#216',
+   quickAnswer:'胃幽門螺旋桿菌篩檢（糞便抗原檢測法）是免費的，但有資格限制：\n✅ 45-74歲民眾\n✅ 未曾參與國健署碳13尿素吹氣法篩檢（原住民族地區）\n✅ 未曾參與113及114年糞便抗原試辦\n每人終身補助1次，請帶健保卡至窗口領取採便盒，或由本所協助填寫轉介單。\n服務時間週一至週五上午8:30-11:30，洽分機216莊護理師。',
+   steps:['確認公費資格','至窗口領取採便盒或填寫轉介單','繳回檢體','完成篩檢後追蹤'],
+   docs:['健保IC卡'],
+   hours:'週一至週五 08:30–11:30',
+   fee:'免費（須符合公費資格，每人終身1次）',
+   forms:[
+     {name:'胃癌防治・糞便抗原檢測胃幽門螺旋桿菌服務說明（臺中市衛生局）',desc:'糞便抗原檢測胃幽門螺旋桿菌服務對象及相關說明',link:'https://www.health.taichung.gov.tw/26198/26327/26904/3171090/3171095'}
+   ],
+   hospitals:[],note:'📋 公費資格對象：\n• 45-74歲民眾（45≤就醫年－出生年≤75 / 45年次-70年次）\n• 未曾參與國健署碳13尿素吹氣法（原住民族地區）\n• 未曾參與113及114年糞便抗原試辦之民眾\n每人終身補助1次'},
 
   {id:'mental',name:'精神及心理衛生、免費心理諮商',badge:'badge-mental',badgeText:'心理',
-   keywords:['心理','精神','諮商','憂鬱','焦慮','毒品','藥癮','酒癮','情緒','免費心理諮商'],
+   keywords:['心理','精神','諮商','憂鬱','焦慮','毒品','藥癮','酒癮','情緒','免費心理諮商','定點諮商','青壯世代'],
    handler:'黃護理師',ext:'#238',
-   quickAnswer:'免費心理諮商時間是每週二或週四下午1點半到4點半，每次晤談50分鐘。\n可以打電話或上網預約，網址是 mental.health.taichung.gov.tw。\n如果想找配合的心理諮商所，鬱心身心診所、中太身心診所等都有合作，分機238黃護理師可以協助安排。',
-   steps:['電話或網路預約','初次晤談評估','定期諮詢（每次50分鐘）'],
-   docs:['健保IC卡','身分證'],hours:'星期二或星期四下午 13:30–16:30',fee:'免費',
-   forms:[{name:'心理諮商預約說明',desc:'預約網址：https://mental.health.taichung.gov.tw/',link:'https://mental.health.taichung.gov.tw/'}],
-   hospitals:['鬱心身心診所 04-22780799','中太身心診所 04-2395-1618','竹見好轉心理諮商所 04-22788855','繽心心理治療所 0965-321326'],
-   note:''},
+   quickAnswer:'【定點心理諮商】設籍或居住臺中市市民，心情溫度計10分以上可申請，每人4次免費面對面諮商（名額有限）。\n⚠️ 僅接受線上預約，無電話預約：https://mental.health.taichung.gov.tw/\n請帶身分證或健保卡，可至各區衛生所或合作諮商所預約。\n\n【青壯世代心理諮商】衛福部補助15-45歲，每人3次（40分鐘/次），與定點諮商只能擇一。\n網址：https://sps.mohw.gov.tw/mhs\n\n如果想找配合的心理診所，太平區有多家合作院所可提供服務，分機238黃護理師可協助安排。',
+   steps:['線上預約（https://mental.health.taichung.gov.tw/）或親至衛生所預約','初次晤談評估','定期諮詢（每次50分鐘）'],
+   docs:['身分證或健保卡或駕照'],hours:'依預約時間（週二或週四 13:30–16:30）',fee:'全額補助免費；每人4次（名額有限）',
+   forms:[
+     {name:'心理諮商線上預約系統',desc:'⚠️ 僅接受線上預約，無電話預約。設籍或居住臺中市市民，心情溫度計1-5題總分10分以上或第6題1分以上可申請',link:'https://mental.health.taichung.gov.tw/'},
+     {name:'衛福部青壯世代心理健康方案（15-45歲）',desc:'補助3次諮商，每次40分鐘，與定點諮商只能擇一，可自行電洽合作診所',link:'https://sps.mohw.gov.tw/mhs'}
+   ],
+   hospitals:[
+     '晨心身心診所 04-22780799（中興路158號，請先門診掛號告知醫師或加LINE: @536gbokk）',
+     '心喜心理治療所 04-22734567（市民大道一段251號，請加LINE: @450hnjfs 預約「青壯方案」）',
+     '竹見好轉心理諮商所 04-22788855（成功東路55巷2號，請加LINE: @getbetter）',
+     '織心心理治療所 04-23937306（樹孝路39號，亦可洽0965-321326）'
+   ],
+   note:'⚠️ 心理諮商僅能線上預約，無電話預約；補助對象為臺中市民'},
 
-  {id:'longcare',name:'長照業務及高齡友善',badge:'badge-long',badgeText:'長照',
-   keywords:['長照','照顧','失能','居家','老人','長者','高齡','長照服務'],
+  {id:'longcare',name:'長照業務（長期照顧申請）',badge:'badge-long',badgeText:'長照',
+   keywords:['長照','照顧','失能','居家','老人','長者','高齡','長照服務','長照申請','長照3.0'],
    handler:'蔡護理師',ext:'#218',
-   quickAnswer:'長照申請可以打電話諮詢，或直接來衛生所填需求評估表。\n填完之後衛生局會派員來評估，核定照顧計畫，依長照2.0核定補助。\n請帶身分證、健保卡、診斷證明書，如果有殘障手冊也可以一起帶來，洽分機218蔡護理師。',
-   steps:['電話諮詢或現場申請','填寫需求評估表','衛生局派員評估','核定照顧計畫'],
-   docs:['身分證','健保IC卡','診斷證明書','殘障手冊（如有）'],
-   hours:'週一至週五 08:00–17:00',fee:'依長照2.0計畫核定',
-   forms:[],hospitals:[],note:''},
+   quickAnswer:'長照申請請撥打1966諮詢專線，或線上填寫申請單（e櫃台）。\n申請後由長照中心主動聯絡並安排訪視，再由長照專員核定照顧計畫，依長照3.0核定補助。\n如果有低收或中低收入戶證明也請一併備妥，有問題洽分機218蔡護理師。',
+   steps:['撥打1966諮詢專線或線上填寫申請單（e櫃台）','由長照中心主動聯絡並安排訪視','長照專員核定照顧計畫'],
+   docs:['身分證','健保IC卡','診斷證明書','殘障手冊（如有）','低收或中低收入戶證明（如有）'],
+   hours:'週一至週五 08:00–17:00',fee:'依長照3.0計畫核定',
+   forms:[
+     {name:'長期照顧申請流程說明',desc:'長照3.0服務申請方式及流程說明',link:'https://www.health.taichung.gov.tw/1633629/post'},
+     {name:'長照服務線上申請系統',desc:'線上申辦長照服務需求評估',link:'https://eservices.taichung.gov.tw/assortBusines/Agree/151/Bulletin/140518/140032'}
+   ],hospitals:[],note:''},
+
+  {id:'dementia',name:'高齡友善・失智照護資源',badge:'badge-long',badgeText:'長照',
+   keywords:['失智','失智症','高齡','認知','老人','阿茲海默','失智照護','高齡友善'],
+   handler:'蔡護理師',ext:'#218',
+   quickAnswer:'如果家中長輩有記憶力衰退、認知功能下降的困擾，可以透過臺中市失智照護服務資源查詢相關支持服務。\n如有需要也可以來衛生所諮詢，洽分機218蔡護理師。',
+   steps:['洽詢衛生所或查詢失智照護資源','評估適合的服務與資源','轉介相關單位'],
+   docs:['健保IC卡','身分證'],hours:'週一至週五 08:00–17:00',fee:'依各服務項目規定',
+   forms:[
+     {name:'臺中市失智照護服務資源',desc:'臺中市失智症照護相關服務單位、資源查詢',link:'https://www.health.taichung.gov.tw/1679210/post'}
+   ],hospitals:[],note:''},
 
   {id:'weak',name:'弱勢族群就醫補助（公益彩券回饋金）',badge:'badge-long',badgeText:'社福',
-   keywords:['弱勢','就醫','補助','低收入','中低收入','健保欠費','救護車','弱勢就醫'],
+   keywords:['弱勢','就醫','補助','低收入','中低收入','健保欠費','救護車','弱勢就醫','公益彩券'],
    handler:'黃護理師',ext:'#238',
-   quickAnswer:'每人每年最高可以補助3萬元，但單次就醫費用要達3,000元以上才能申請。\n請準備身分證正反面影本、戶口名簿影本、低或中低收入戶證明、收據正本，還有郵局存摺封面影本，填4頁申請書。\n115年度的計畫到12月15日截止，洽分機238黃護理師。',
-   steps:['備齊文件','填具申請書（共4頁）','至衛生所繳交或郵寄','核准後撥款至帳戶'],
-   docs:['身分證正反面影本','新式戶口名簿影本','低/中低收入戶正本','申請書（共4頁）','收據正本及費用明細','郵局存摺封面影本'],
-   hours:'週一至週五 08:00–17:00',fee:'每人每年最高補助3萬元；單次需達3,000元以上',
-   forms:[{name:'弱勢族群就醫補助申請書（115年度，共4頁）',desc:'含申請人基本資料、代理申請委託書、補助對象檢附資料、領款單據',link:null}],
-   hospitals:[],note:'115年計畫至12月15日止'},
+   quickAnswer:'每人每年最高可以補助3萬元，但單次就醫費用要達3,000元以上才能申請（未達3,000元由本局累計至3,000元再辦核銷）。\n📋 備齊相關資料後，請先電洽04-23938083分機238黃護理師約時間，再繳交至太平區衛生所送件。\n\n⚠️ 必須與承辦人約時間才可辦理！\n⚠️ 115年度計畫至12月15日止或補助款用罄止，請儘早申請。\n⚠️ 本人及委託人印章都要帶！',
+   steps:['備齊相關文件','先電洽分機238黃護理師約定辦理時間（必須預約）','至衛生所繳交資料','由衛生局核准後撥款至帳戶'],
+   docs:['身分證正反面影本','新式戶口名簿影本一份','申請人（本人）及受委託人（親屬）印章','低收或中低收入戶正本或身障生活津貼證明等','弱勢族群就醫補助申請書一份','需補助項目之收據正本及費用明細表','郵局存摺封面影本（本人或親屬）'],
+   hours:'週一至週五 08:00–17:00（須事先預約）',fee:'每人每年最高補助3萬元；健保欠費及救護車費每人最高各6,000元；單次需達3,000元以上',
+   forms:[{name:'臺中市115年度公益彩券回饋金弱勢族群就醫補助公告',desc:'補助對象：低收入戶、中低收入戶、其他符合各級政府認定經濟困難並開立證明者',link:'https://www.health.taichung.gov.tw/2900328/post'}],
+   hospitals:[],note:'⚠️ 115年度計畫至12月15日止或補助款用罄止 ｜ 必須與承辦人預約時間才可辦理 ｜ 本人及委託人印章都須攜帶'},
 
-  {id:'motor',name:'汽機車駕照體檢',badge:'badge-admin',badgeText:'體檢',
+  {id:'motor',name:'汽機車駕照體檢（18-70歲）',badge:'badge-admin',badgeText:'體檢',
    keywords:['機車','駕照','體檢','考照','摩托車','機車體檢','汽車駕照體檢','駕照體檢','一般駕照體檢'],
    handler:'莊護理師',ext:'#216',
    quickAnswer:'一般考照或駕照延期的體檢時間是每週一、四上午8點半到11點半，費用150元（多一份證明加收50元）。\n請帶健保卡、身分證或駕照，還要準備2張二吋彩色照片（3個月內拍的）。\n如果您是70歲以上要辦高齡換照，要問的是另一項「高齡駕駛換照」，不是這個喔。',
    steps:['填申請表','核對資料→掛號繳費','常規檢查→醫師查身體','填發證明書'],
-   docs:['健保IC卡','身分證或駕照','二吋彩色相片2張（近3個月）'],
+   docs:['健保IC卡','身分證或駕照','二吋彩色相片2張（近3個月）','👓 平時有戴眼鏡者請攜帶眼鏡（需進行視力檢查）'],
    hours:'週一、四 08:30–11:30',fee:'150元（每增1份加收50元）',
-   forms:[],hospitals:[],note:'適用一般考照、駕照延期之體檢；汽車相關監理業務請至臺中區監理所。70歲以上高齡駕駛換照請見「高齡駕駛換照」項目'},
+   forms:[
+     {name:'臺中市監理站機車初考領駕照流程',desc:'機車初次考照領照相關流程說明',link:'https://tmv.thb.gov.tw/cp.aspx?n=2522'}
+   ],
+   hospitals:[],note:'適用18-70歲一般考照、駕照延期之體檢；汽車相關監理業務請至臺中區監理所。70歲以上高齡駕駛換照請見「高齡駕駛換照」項目'},
 
   {id:'elderly_license',name:'高齡駕駛人換照（體檢及認知功能測驗）',badge:'badge-admin',badgeText:'體檢',
    keywords:['高齡駕駛','高齡換照','70歲換照','75歲換照','老人駕照','認知功能測驗','長者駕照','高齡駕照體檢'],
    handler:'蔡護理師',ext:'#218',
    quickAnswer:'70歲以上換照新制，要先體檢、再上2小時的高齡換照講習，換照後駕照效期會延到75歲。\n75歲以上除了體檢和講習，還要多通過一項認知功能測驗，之後每3年要再換照一次。\n體檢時間是週一、四上午8點半到11點半，費用150元，請帶健保卡、身分證或駕照、2張二吋照片，洽分機218蔡護理師。',
    steps:['年滿70歲：駕照效期屆滿前2年內完成體檢及2小時高齡換照講習，換照後效期延至75歲','年滿75歲：除體檢及講習外，另需通過認知功能測驗合格（或檢具無中度以上失智證明），緩衝期3年內完成換照，換照後每3年需再換照一次','115年5月31日已滿70歲未滿75歲者，應於117年5月31日前完成換照'],
-   docs:['健保IC卡','身分證或駕照','二吋彩色相片2張（近3個月）'],
-   hours:'週一、四 08:30–11:30',
-   fee:'體檢150元（每增1份加收50元）；高齡換照講習及認知功能測驗費用請洽監理單位',
-   forms:[{name:'高齡駕駛人駕照管理制度說明（交通部公路局）',desc:'115年5月31日起實施新制：70歲以上駕駛人換照需體檢、75歲以上另需通過認知功能測驗；70歲以上自願繳回駕照可獲TPASS乘車優惠回饋',link:'https://www.thb.gov.tw/cp.aspx?n=169'}],
+   docs:['健保IC卡','身分證或駕照','二吋彩色相片2張（近3個月）','👓 平時有戴眼鏡者請攜帶眼鏡（需進行視力檢查）'],
+   forms:[{name:'70-74歲高齡駕駛體檢地點 一次性告知單',desc:'太平區高齡駕駛體檢合約院所及注意事項',link:'https://drive.google.com/file/d/1k3jd2j99glKTt_axAyjT2XjHESaf18cm/view?usp=drive_link'},{name:'高齡駕駛人駕照管理制度說明（交通部公路局）',desc:'115年5月31日起實施新制：70歲以上駕駛人換照需體檢、75歲以上另需通過認知功能測驗；70歲以上自願繳回駕照可獲TPASS乘車優惠回饋',link:'https://www.thb.gov.tw/cp.aspx?n=169'}],
    hospitals:[],note:'體檢效期3個月、高齡換照講習效期1年；講習預約請至監理服務網'},
-
-  {id:'rehab_bus',name:'小型復康巴士服務',badge:'badge-long',badgeText:'無障礙',
-   keywords:['復康巴士','身障','輪椅','無障礙','交通','復康'],
-   handler:'廖護理師',ext:'#223',
-   quickAnswer:'復康巴士是免費的，但限一名家屬陪同搭乘，要先電話預約確認身障資格。\n週一到週五早上8點發頭班車，週六只到中午12點，平常日服務時段比較長。\n屯區的預約專線是04-22792486，第一次預約也可以打分機223問廖護理師。',
-   steps:['首次電話預約確認身障資格','建立個案資料','確認優先等級（A/B/C級）','按規定提前天數電話預約'],
-   docs:['身心障礙手冊或身心障礙證明'],
-   hours:'週一至週五上午8時發頭班車；週六上午8時至中午12時',fee:'免費（限一名家屬陪同）',
-   forms:[],hospitals:[],note:'屯區預約專線：04-22792486'},
 
   {id:'food_registration',name:'食品業者登錄（非登不可）',badge:'badge-admin',badgeText:'行政',
    keywords:['食品登錄','非登不可','食品業者','自然人憑證','工商憑證','食品業登錄'],
@@ -465,34 +540,43 @@ const DB=[
   {id:'verify',name:'行政相驗',badge:'badge-tb',badgeText:'行政',
    keywords:['相驗','死亡','死亡證明','往生','驗屍','行政相驗'],
    handler:'莊護理師',ext:'#216',
-   quickAnswer:'行政相驗是隨到隨辦，緊急的話可以直接打04-23938083。\n家屬要提出申請並填申請書，醫師會去現場相驗，之後填發死亡證明書。\n費用是1,000元一次（含10份死亡證明書），記得直系親屬一定要在場。',
-   steps:['家屬提出申請並填具申請書','醫師前往實地相驗','填發死亡證明書','繳費'],
-   docs:['亡者及申請人身分證','相關疾病診斷書或病歷摘要'],
-   hours:'隨到隨辦（緊急請電 04-23938083）',fee:'1,000元/次（含10份死亡證明書）',
-   forms:[],hospitals:[],note:'直系親屬必須在場'},
+   quickAnswer:'家中長輩若為自然死或病死，請聯絡衛生所安排行政相驗。\n【平日】由衛生所優先媒合指定醫療機構辦理。\n【假日及例假日】電話受理後，安排轉介指定機構，或於上班日安排相驗。\n低收或中低收入戶個案由衛生所醫師執行。\n\n💰 費用：平日2,000-3,000元、假日3,000-5,000元（交通費另計）；低收/中低收免費。\n\n⚠️ 如為自殺、他殺、車禍、骨折等可疑非病死，或身分不明者，請由警察機關依法報請「司法相驗」，不屬本所業務。',
+   steps:['來電申請行政相驗','由衛生所媒合指定醫療機構或安排衛生所醫師執行','取得死亡證明書'],
+   docs:['身分證（往生者）','健保IC卡（往生者）'],
+   hours:'平日來電申請；假日電話受理後上班日安排',
+   fee:'平日2,000-3,000元；假日3,000-5,000元（交通費另計）；低收/中低收免費',
+   forms:[
+     {name:'行政相驗說明（臺中市衛生局）',desc:'行政相驗申辦說明及相關規定',link:'https://www.health.taichung.gov.tw/26198/27035/26823/3029953'},
+     {name:'臺中市生命禮儀管理處－申請火化流程',desc:'申請火化排隊不須死亡證明書；死亡證明書於確定火化前一日備齊即可',link:'https://mortuary.taichung.gov.tw/Frontend/RowContent.aspx?id=1507'}
+   ],
+   hospitals:[],
+   note:'⚠️ 可疑非病死（自殺、他殺、車禍、骨折等）或身分不明者，請由警察機關依法報請司法相驗，非行政相驗範疇'},
 
-  {id:'methadone',name:'美沙冬替代治療（抽血營養費）',badge:'badge-mental',badgeText:'替代治療',
+  {id:'methadone',name:'美沙冬替代治療抽血營養費之申請',badge:'badge-mental',badgeText:'替代治療',
    keywords:['美沙冬','替代治療','成癮','抽血','營養費'],
-   handler:'黃護理師',ext:'#238',
-   quickAnswer:'要先請醫院開立申請書，所有欄位都要蓋章，再帶身分證正本和印章過來。\n如果承辦人在所，會直接核對後現金給付；不在的話，值班同仁聯絡後當天也能現場領取。\n費用依醫院核定是500元或100元，洽分機238黃護理師。',
-   steps:['備齊文件：醫院申請書（所有欄位蓋章）＋身分證正本＋印章','承辦人在所：通知核對→直接給付現金','承辦人不在所：值班同仁電聯，當日可現場請領'],
-   docs:['醫院開立申請書（所有欄位蓋章）','本人身分證正本','印章（若無蓋手印）'],
+   handler:'黃護理師',ext:'#214',
+   quickAnswer:'美沙冬替代治療抽血營養費之申請，承辦人分機214。\n要先請醫院開立申請書（需有騎縫章，且不得塗改），再帶身分證正本和印章過來。\n費用依醫院核定是500元或100元，建議先來電洽詢分機214黃護理師。',
+   steps:['備齊文件：醫院申請書(需有騎縫章，且不得塗改)＋身分證正本＋印章','先來電洽詢分機214確認後，再至衛生所辦理'],
+   docs:['醫院開立申請書（需有騎縫章，且不得塗改）','本人身分證正本','印章（若無蓋手印）'],
    hours:'週一至週五 08:00–17:00',fee:'依醫院核定（500元或100元）',
-   forms:[{name:'臺中市政府衛生局轉介替代治療初診補助方案申請書',desc:'需至少3個醫院章＋護理師章；核定意見由院方填寫，不得有塗改',link:null}],
+   forms:[{name:'臺中市政府衛生局轉介替代治療初診補助方案申請書',desc:'',link:null}],
    hospitals:[],note:''},
 
-  {id:'organ',name:'醫管科業務（安寧、器捐、CPR/AED、預立醫療）',badge:'badge-long',badgeText:'醫管',
-   keywords:['安寧','器捐','器官捐贈','CPR','AED','預立醫療','器捐安寧'],
+  {id:'organ',name:'安寧療護・器官捐贈',badge:'badge-long',badgeText:'醫管',
+   keywords:['安寧','器捐','器官捐贈','安寧療護','善終','器官'],
    handler:'廖護理師',ext:'#223',
-   quickAnswer:'器官捐贈同意書可以勾選全部或部分器官，需要2位見證人，也可以加註在健保卡上。\n預立安寧緩和醫療意願書也需要2位見證人，諮詢專線是0800-220-927。\n請帶健保卡、身分證和相關文件來，洽分機223廖護理師。',
-   steps:['填寫相關意願書','至窗口辦理或電話諮詢'],
-   docs:['健保IC卡','身分證','各業務所需文件'],
-   hours:'週一至週五 08:00–17:00',fee:'依業務項目不同',
-   forms:[{name:'器官捐贈同意書',desc:'可勾選全部或部分器官；需見證人2位；可加註於健保IC卡',link:null},{name:'預立安寧緩和醫療暨維生醫療抉擇意願書',desc:'需見證人2位；諮詢：0800-220-927',link:null}],
-   hospitals:[],note:''},
+   quickAnswer:'本所提供器官捐贈同意書及安寧緩和醫療意願書紙本供民眾索取，請帶回家與家人討論後再簽署。\n\n【器官捐贈】\n建議使用網路線上簽署最方便：https://www.organ.org.tw/Register.aspx\n如要紙本，現場可以索取，簽署後請郵寄至：台北市大安區信義路四段24號6樓（器官捐贈協會）\n✅ 您的捐贈意願可隨時查詢或撤回，請洽衛福部安寧療護及器官捐贈意願資料處理小組：02-2393-3298\n\n【安寧療護】\n安寧緩和醫療意願書需2位見證人，簽署後請郵寄至：\n251 新北市淡水區民生路45號（台灣安寧照顧協會）',
+   steps:['至衛生所索取紙本同意書或使用網路線上簽署','帶回家與家人討論後簽署','郵寄至指定單位（器捐協會或安寧照顧協會）'],
+   docs:['身分證（簽署參考用）'],
+   hours:'週一至週五 08:00–17:00',fee:'免費',
+   forms:[
+     {name:'器官捐贈線上簽署（推薦）',desc:'線上簽署器官捐贈意願，可隨時查詢或撤回；如需紙本請至窗口索取，簽署後郵寄至台北市大安區信義路四段24號6樓（器官捐贈協會）',link:'https://www.organ.org.tw/Register.aspx'},
+     {name:'安寧緩和醫療意願書（紙本）',desc:'請至窗口索取，與家人討論後由本人及2位見證人簽署，郵寄至：251 新北市淡水區民生路45號（台灣安寧照顧協會）',link:'https://drive.google.com/file/d/1FRV2s3mBL-2SN995ImGUNXv49DRaxAb-/view?usp=sharing'}
+   ],
+   hospitals:[],note:'器官捐贈意願可隨時查詢或撤回，請洽衛福部處理小組 02-2393-3298'},
 
   {id:'bcg',name:'卡介苗接種',badge:'badge-women',badgeText:'預防接種',
-   keywords:['卡介苗','BCG','結核病疫苗','卡介苗接種','預防針'],
+   keywords:['卡介苗','BCG','結核病疫苗','卡介苗接種','預防針','疫苗接種'],
    handler:'林護理師',ext:'#217',
    quickAnswer:'💉 卡介苗接種時間是每月第二個禮拜五，上午9:00–11:00，跟其他幼兒疫苗時間不一樣喔！\n📅 建議出生滿5到8個月接種，最晚要在1歲前完成。\n🏥 如果這個時段不方便，下面也有其他合約診所可以選擇接種，記得事先電話確認門診時間喲！',
    steps:['攜帶兒童健康手冊及健保卡','於本所公告接種時段前來接種','接種後依手冊紀錄追蹤'],
@@ -515,7 +599,7 @@ const DB=[
 
 const DISTRICTS=[
   {handler:'李護理師',ext:'#221',areas:[{name:'新吉里',pop:6737},{name:'光明里',pop:4284},{name:'光華里',pop:5999}]},
-  {handler:'溫護理師',ext:'#215',areas:[{name:'新福里',pop:8976},{name:'新光里',pop:9351}]},
+  {handler:'温護理師',ext:'#215',areas:[{name:'新福里',pop:8976},{name:'新光里',pop:9351}]},
   {handler:'黃護理師',ext:'#222',areas:[{name:'東和里',pop:3234},{name:'成功里',pop:4467},{name:'福隆里',pop:4128},{name:'建國里',pop:3038},{name:'建興里',pop:3147}]},
   {handler:'林護理師',ext:'#237',areas:[{name:'宜昌里',pop:5629},{name:'坪林里',pop:3677},{name:'勸益里',pop:2571},{name:'聖和里',pop:1658},{name:'頭汴里',pop:1896},{name:'東汴里',pop:1152}]},
   {handler:'蔡護理師',ext:'#218',areas:[{name:'中山里',pop:4433},{name:'豐年里',pop:4775},{name:'東平里',pop:4864},{name:'永平里',pop:4752}]},
