@@ -243,6 +243,28 @@ body{font-family:var(--font-sans);font-size:17px;background:#fafafa;color:var(--
         <div style="font-size:12px;color:#999;margin-top:4px;text-align:right">點圖可放大檢視</div>
       </div>
     </div>
+
+    <div style="background:#fff;border-radius:14px;padding:20px;margin-bottom:16px;border:1px solid var(--pk100)">
+      <div style="font-weight:600;color:var(--pk500);font-size:15px;margin-bottom:4px"><i class="ti ti-speakerphone" aria-hidden="true"></i> 所內最新訊息公告</div>
+      <div style="font-size:12px;color:#999;margin-bottom:14px">大家都可以在這裡張貼訊息，設定到期日之後會自動消失</div>
+
+      <div style="background:var(--pk50);border:1px solid var(--pk100);border-radius:10px;padding:14px;margin-bottom:16px">
+        <textarea id="msg-content" placeholder="輸入訊息內容…" style="width:100%;min-height:70px;padding:10px;border:1.5px solid var(--pk100);border-radius:8px;font-size:14px;font-family:inherit;resize:vertical;box-sizing:border-box;margin-bottom:8px"></textarea>
+        <div style="display:flex;gap:8px;margin-bottom:8px;flex-wrap:wrap">
+          <input id="msg-author" type="text" placeholder="張貼人（選填）" style="flex:1;min-width:120px;padding:9px 10px;border:1.5px solid var(--pk100);border-radius:8px;font-size:14px;box-sizing:border-box">
+          <div style="display:flex;align-items:center;gap:6px">
+            <label style="font-size:13px;color:var(--pk600);white-space:nowrap">到期日</label>
+            <input id="msg-expire" type="date" style="padding:9px 10px;border:1.5px solid var(--pk100);border-radius:8px;font-size:14px">
+          </div>
+        </div>
+        <button onclick="submitMessage()" style="width:100%;padding:10px;background:var(--pk400);color:#fff;border:none;border-radius:8px;cursor:pointer;font-size:14px;font-weight:600">張貼訊息</button>
+        <div id="msg-status" style="font-size:12px;color:#e05;margin-top:6px;min-height:16px"></div>
+      </div>
+
+      <div id="msg-list" style="display:flex;flex-direction:column;gap:10px">
+        <div style="text-align:center;color:#999;font-size:13px;padding:10px">載入中…</div>
+      </div>
+    </div>
   </div>
 </div>
 </div>
@@ -258,6 +280,79 @@ function openImgZoom(src){
 }
 function closeImgZoom(){
   document.getElementById('img-zoom-modal').style.display='none';
+}
+
+// ===== 本月重要訊息留言板 =====
+const MSG_API_URL='https://script.google.com/macros/s/AKfycbweeSphPTburlrt9-VwjEbD__M5ARBe3cyVAr336L4Dr73m73mS7di_VZ5RKnFr4Fev-Q/exec'; // TODO: 部署後把網址貼在這裡
+
+function defaultExpireDate(){
+  const d=new Date();
+  d.setDate(d.getDate()+30);
+  return d.toISOString().slice(0,10);
+}
+
+function escapeHtml(s){
+  return String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function loadMessages(){
+  const list=document.getElementById('msg-list');
+  list.innerHTML='<div style="text-align:center;color:#999;font-size:13px;padding:10px">載入中…</div>';
+  fetch(MSG_API_URL)
+    .then(r=>r.json())
+    .then(data=>{
+      if(!data.success){ list.innerHTML='<div style="text-align:center;color:#e05;font-size:13px;padding:10px">載入失敗</div>'; return; }
+      renderMessages(data.messages);
+    })
+    .catch(()=>{ list.innerHTML='<div style="text-align:center;color:#e05;font-size:13px;padding:10px">連線失敗，請確認網址是否已設定</div>'; });
+}
+
+function renderMessages(messages){
+  const list=document.getElementById('msg-list');
+  if(!messages||!messages.length){
+    list.innerHTML='<div style="text-align:center;color:#999;font-size:13px;padding:10px">目前沒有留言</div>';
+    return;
+  }
+  list.innerHTML=messages.map(m=>`
+    <div style="border:1px solid var(--pk100);border-radius:10px;padding:12px 14px;background:var(--pk50)">
+      <div style="font-size:14px;color:var(--color-text-primary);line-height:1.6;white-space:pre-wrap">${escapeHtml(m.content)}</div>
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-top:8px;flex-wrap:wrap;gap:6px">
+        <div style="font-size:12px;color:var(--pk600)">${escapeHtml(m.author||'匿名')}・${m.postDate} 張貼・${m.expireDate} 到期</div>
+        <button onclick="deleteMessage('${m.id}')" style="background:none;border:none;color:#c0392b;font-size:12px;cursor:pointer;padding:0">🗑 刪除</button>
+      </div>
+    </div>`).join('');
+}
+
+function submitMessage(){
+  const content=document.getElementById('msg-content').value.trim();
+  const author=document.getElementById('msg-author').value.trim();
+  const expire=document.getElementById('msg-expire').value;
+  const status=document.getElementById('msg-status');
+  if(!content){ status.textContent='請輸入訊息內容'; return; }
+  if(!expire){ status.textContent='請選擇到期日'; return; }
+  status.textContent='送出中…';
+  fetch(MSG_API_URL,{method:'POST',body:JSON.stringify({action:'add',content,author,expireDate:expire})})
+    .then(r=>r.json())
+    .then(data=>{
+      if(data.success){
+        document.getElementById('msg-content').value='';
+        document.getElementById('msg-author').value='';
+        document.getElementById('msg-expire').value=defaultExpireDate();
+        status.textContent='';
+        loadMessages();
+      } else {
+        status.textContent='送出失敗，請再試一次';
+      }
+    })
+    .catch(()=>{ status.textContent='連線失敗，請確認網址是否已設定'; });
+}
+
+function deleteMessage(id){
+  if(!confirm('確定要刪除這則訊息嗎？'))return;
+  fetch(MSG_API_URL,{method:'POST',body:JSON.stringify({action:'delete',id})})
+    .then(r=>r.json())
+    .then(()=>{ loadMessages(); })
+    .catch(()=>{ alert('刪除失敗，請稍後再試'); });
 }
 </script>
 
@@ -778,6 +873,8 @@ function checkStaffPw(){
     closeStaffLogin();
     document.getElementById('staff-panel').style.display='block';
     window.scrollTo({top:0,behavior:'smooth'});
+    document.getElementById('msg-expire').value=defaultExpireDate();
+    loadMessages();
   } else {
     document.getElementById('staff-pw-err').textContent='密碼錯誤，請再試一次';
     document.getElementById('staff-pw-input').select();
