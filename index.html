@@ -200,8 +200,66 @@ body{font-family:var(--font-sans);font-size:17px;background:#fafafa;color:var(--
   </div>
 </div>
 
-<div class="footer">臺中市太平區衛生所　電話：04-23938083　地址：太平區中山路一段213之1號</div>
+<div class="footer">臺中市太平區衛生所　電話：04-23938083　地址：太平區中山路一段213之1號
+  <div style="margin-top:12px">
+    <button onclick="openStaffLogin()" style="background:none;border:none;color:var(--pk300);font-size:12px;cursor:pointer;opacity:0.6">🔒 所內人員專區</button>
+  </div>
 </div>
+
+<div id="staff-login-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.45);z-index:999;display:none;align-items:center;justify-content:center">
+  <div style="background:#fff;border-radius:16px;padding:28px 24px;width:280px;box-shadow:0 4px 24px rgba(0,0,0,0.15);text-align:center">
+    <div style="font-size:28px;margin-bottom:8px">🔒</div>
+    <div style="font-weight:600;font-size:16px;color:var(--pk600);margin-bottom:6px">所內人員專區</div>
+    <div style="font-size:13px;color:#888;margin-bottom:16px">請輸入密碼以繼續</div>
+    <input id="staff-pw-input" type="password" placeholder="請輸入密碼" style="width:100%;padding:10px 12px;border:1.5px solid var(--pk100);border-radius:10px;font-size:15px;box-sizing:border-box;outline:none;margin-bottom:8px" onkeydown="if(event.key==='Enter')checkStaffPw()">
+    <div id="staff-pw-err" style="color:#e05;font-size:12px;min-height:18px;margin-bottom:8px"></div>
+    <div style="display:flex;gap:8px">
+      <button onclick="closeStaffLogin()" style="flex:1;padding:10px;border:1.5px solid var(--pk100);background:#fff;border-radius:10px;cursor:pointer;font-size:14px;color:#666">取消</button>
+      <button onclick="checkStaffPw()" style="flex:1;padding:10px;background:var(--pk400);color:#fff;border:none;border-radius:10px;cursor:pointer;font-size:14px;font-weight:600">進入</button>
+    </div>
+  </div>
+</div>
+
+<div id="staff-panel" style="display:none;position:fixed;inset:0;background:#fdf6f8;z-index:998;overflow-y:auto">
+  <div style="max-width:680px;margin:0 auto;padding:20px 16px">
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px">
+      <button onclick="closeStaffPanel()" style="background:var(--pk100);border:none;border-radius:20px;padding:8px 16px;cursor:pointer;color:var(--pk600);font-size:14px"><i class="ti ti-arrow-left"></i> 返回</button>
+      <div style="font-size:17px;font-weight:600;color:var(--pk600)">🔒 所內人員專區</div>
+    </div>
+
+    <div style="background:#fff;border-radius:14px;padding:20px;margin-bottom:16px;border:1px solid var(--pk100)">
+      <div style="font-weight:600;color:var(--pk500);font-size:15px;margin-bottom:16px"><i class="ti ti-vaccine" aria-hidden="true"></i> 兒童預防接種參考資料</div>
+
+      <div style="margin-bottom:16px">
+        <div style="font-weight:500;font-size:14px;color:var(--pk600);margin-bottom:8px">📅 現行兒童預防接種時程表（114年1月版）</div>
+        <img src="img/vaccine-schedule.png" alt="我國現行兒童預防接種時程表" style="width:100%;height:auto;border:1px solid var(--pk100);border-radius:8px;cursor:zoom-in;display:block" onclick="openImgZoom(this.src)">
+        <div style="font-size:12px;color:#999;margin-top:4px;text-align:right">點圖可放大檢視</div>
+      </div>
+
+      <div style="margin-top:20px">
+        <div style="font-weight:500;font-size:14px;color:var(--pk600);margin-bottom:10px">⏱ 各疫苗最短接種間隔（114.4版）</div>
+        <img src="img/vaccine-interval.png" alt="各項常規疫苗最小接種年齡與最短接種間隔" style="width:100%;height:auto;border:1px solid var(--pk100);border-radius:8px;cursor:zoom-in;display:block;margin-bottom:10px" onclick="openImgZoom(this.src)">
+        <img src="img/vaccine-interval-notes.png" alt="接種間隔附註說明" style="width:100%;height:auto;border:1px solid var(--pk100);border-radius:8px;cursor:zoom-in;display:block" onclick="openImgZoom(this.src)">
+        <div style="font-size:12px;color:#999;margin-top:4px;text-align:right">點圖可放大檢視</div>
+      </div>
+    </div>
+  </div>
+</div>
+</div>
+
+<div id="img-zoom-modal" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,0.88);z-index:1100;align-items:center;justify-content:center;cursor:zoom-out;padding:20px" onclick="closeImgZoom()">
+  <img id="img-zoom-content" src="" style="max-width:96vw;max-height:96vh;border-radius:6px;box-shadow:0 4px 30px rgba(0,0,0,0.5)">
+</div>
+
+<script>
+function openImgZoom(src){
+  document.getElementById('img-zoom-content').src=src;
+  document.getElementById('img-zoom-modal').style.display='flex';
+}
+function closeImgZoom(){
+  document.getElementById('img-zoom-modal').style.display='none';
+}
+</script>
 
 <script>
 const DB=[
@@ -403,44 +461,83 @@ const DB=[
    ],
    hospitals:[],note:'科學算病館平台適用年齡35-70歲，其他年齡僅供參考'},
 
-  {id:'breast',name:'婦癌篩檢（乳癌、子宮頸癌）',badge:'badge-screen',badgeText:'篩檢',
-   keywords:['乳癌','子宮頸','HPV','婦癌','抹片','乳房','篩檢','婦癌篩檢','癌症篩檢'],
+  {id:'cervical',name:'子宮頸抹片檢查（子宮頸癌）',badge:'badge-screen',badgeText:'篩檢',
+   keywords:['子宮頸','子宮頸癌','抹片','子宮頸抹片','婦癌','癌症篩檢'],
    handler:'林護理師',ext:'#237',
-   quickAnswer:'乳癌篩檢是45到69歲每2年1次，子宮頸抹片是30歲以上每年1次，都是免費的。\n請先確認自己符合資格，再填轉介單到合約醫院或衛生所定點篩檢。\n預約和詳細時間可以打分機237問林護理師。',
-   steps:['確認篩檢資格','填寫轉介單','至合約醫院或衛生所定點篩檢'],
-   docs:['健保IC卡'],hours:'預約時間',
-   fee:'免費（乳癌45–69歲每2年1次；子宮頸30歲以上每年1次）',
-   forms:[
-     {name:'臺中市癌症篩檢醫療院所名冊',desc:'乳癌、子宮頸癌等各項篩檢合約院所查詢',link:'https://www.health.taichung.gov.tw/media/1418927/%E8%87%BA%E4%B8%AD%E5%B8%82%E7%99%8C%E7%97%87%E7%AF%A9%E6%AA%A2%E9%86%AB%E7%99%82%E9%99%A2%E6%89%80-0527.pdf'}
-   ],
-   hospitals:[],note:''},
+   quickAnswer:'子宮頸抹片檢查對象：\n• 30歲以上女性：每年1次（建議至少每3年1次）\n• 25-29歲女性：每3年補助1次\n免費，請帶健保卡至合約院所或本所接受檢查，建議先電話預約，洽分機237林護理師。',
+   steps:['確認篩檢資格（25歲以上女性）','攜帶健保卡至合約醫療院所或本所','接受子宮頸抹片檢查'],
+   docs:['健保IC卡'],hours:'依合約院所門診時間',
+   fee:'免費（30歲以上每年1次；25-29歲每3年1次）',
+   forms:[{name:'臺中市癌症篩檢醫療院所名冊',desc:'子宮頸癌篩檢合約院所查詢，建議先電話預約',link:'https://www.health.taichung.gov.tw/26198/26327/26904/26932/1487424/post'}],
+   hospitals:[],note:'篩檢不需付費，但各醫療院所可能酌收掛號費'},
 
-  {id:'hpv',name:'婦女人類乳突病毒（HPV）檢測',badge:'badge-screen',badgeText:'篩檢',
+  {id:'breast',name:'乳房X光攝影檢查（乳癌）',badge:'badge-screen',badgeText:'篩檢',
+   keywords:['乳癌','乳房','乳房攝影','乳房X光','婦癌','癌症篩檢'],
+   handler:'林護理師',ext:'#237',
+   quickAnswer:'乳房X光攝影檢查對象：\n• 40-74歲女性：每2年1次\n免費，請帶健保卡至合約醫療院所接受檢查，建議先電話預約，洽分機237林護理師。',
+   steps:['確認篩檢資格（40-74歲女性）','攜帶健保卡至合約醫療院所','接受乳房X光攝影檢查'],
+   docs:['健保IC卡'],hours:'依合約院所門診時間',
+   fee:'免費（40-74歲女性每2年1次）',
+   forms:[{name:'臺中市癌症篩檢醫療院所名冊',desc:'乳癌篩檢合約院所查詢，建議先電話預約',link:'https://www.health.taichung.gov.tw/26198/26327/26904/26932/1487424/post'}],
+   hospitals:[],note:'篩檢不需付費，但各醫療院所可能酌收掛號費'},
+
+  {id:'hpv',name:'人類乳突病毒檢測（HPV）',badge:'badge-screen',badgeText:'篩檢',
    keywords:['HPV','人類乳突','乳突病毒','HPV檢測','子宮頸HPV','HPV篩檢','HPV補接種','癌症篩檢'],
    handler:'林護理師',ext:'#237',
-   quickAnswer:'HPV（人類乳突病毒）檢測是子宮頸癌篩檢的重要工具，可至合約醫療院所接受檢測服務。\n如尚未完成HPV疫苗接種，也可至合約院所補接種。\n詳細資格與合約院所請洽分機237林護理師，或參考下方連結。',
-   steps:['確認資格','至合約醫療院所掛號接受HPV檢測','如需補接種HPV疫苗，請至合約接種院所'],
+   quickAnswer:'HPV人類乳突病毒檢測對象：\n• 35歲、45歲、65歲女性：當年度1次\n免費，請帶健保卡至合約醫療院所。如尚未完成HPV疫苗接種，也可至合約院所補接種，詳情洽分機237林護理師。',
+   steps:['確認資格（35歲、45歲、65歲女性）','攜帶健保卡至合約醫療院所接受HPV檢測','如需補接種HPV疫苗，請至合約接種院所'],
    docs:['健保IC卡'],hours:'依合約院所門診時間',
-   fee:'依公費資格，請洽承辦人確認',
+   fee:'免費（35歲、45歲、65歲女性，當年度1次）',
    forms:[
      {name:'臺中市婦女HPV檢測相關資訊',desc:'衛生局婦女人類乳突病毒檢測業務說明',link:'https://www.health.taichung.gov.tw/26198/26327/26904/2858601/2858710'},
      {name:'HPV檢測服務醫療院所名單',desc:'臺中市婦女HPV檢測合約院所名冊',link:'https://www.health.taichung.gov.tw/media/1391125/%E8%87%BA%E4%B8%AD%E5%B8%82%E5%A9%A6%E5%A5%B3%E4%BA%BA%E9%A1%9E%E4%B9%B3%E7%AA%81%E7%97%85%E6%AF%92%E6%9F%A5%E6%96%87%E7%AF%A9%E6%AA%A2%E6%9C%8D%E5%8B%99%E9%86%AB%E7%99%82%E9%99%A2%E6%89%80%E5%90%8D%E5%96%AE.pdf'},
      {name:'HPV疫苗補接種合約院所',desc:'尚未完成HPV疫苗接種者，可至合約院所補接種',link:'https://drive.google.com/file/d/1QwYmih_O6j6bX9oIpYXOD7jFXGNDWQ9o/view?usp=sharing'}
    ],
+   hospitals:[],note:'篩檢不需付費，但各醫療院所可能酌收掛號費'},
+
+  {id:'oral_cancer',name:'口腔黏膜檢查（口腔癌）',badge:'badge-screen',badgeText:'篩檢',
+   keywords:['口腔癌','檳榔','口腔','口腔黏膜','嚼檳榔','癌症篩檢'],
+   handler:'廖護理師',ext:'#223',
+   quickAnswer:'口腔黏膜檢查對象：\n• 30歲以上有嚼檳榔（含已戒）或吸菸習慣之民眾：每2年1次\n• 18-29歲有嚼檳榔（含已戒）習慣之原住民：每2年1次\n免費，服務時間週一至週五上午08:30-11:30，請帶健保卡，洽分機223廖護理師。',
+   steps:['確認篩檢資格：①30歲以上有嚼檳榔（含已戒）或吸菸習慣之民眾 ②18-29歲有嚼檳榔（含已戒）習慣之原住民，每2年1次','填寫〔口腔黏膜檢查表〕','醫師提供口腔黏膜檢查'],
+   docs:['健保IC卡'],hours:'週一至週五 08:30–11:30',
+   fee:'免費（每2年1次）',
+   forms:[{name:'臺中市癌症篩檢醫療院所名冊',desc:'口腔癌篩檢合約院所查詢',link:'https://www.health.taichung.gov.tw/26198/26327/26904/26932/1487424/post'}],
    hospitals:[],note:''},
 
-  {id:'colon',name:'大腸直腸癌篩檢、口腔癌篩檢、LDCT肺癌篩檢',badge:'badge-screen',badgeText:'篩檢',
-   keywords:['大腸癌','大腸','直腸','口腔癌','檳榔','LDCT','肺癌','大腸癌篩檢','肺癌篩檢','癌症篩檢'],
+  {id:'colon',name:'糞便潛血檢查（大腸癌）',badge:'badge-screen',badgeText:'篩檢',
+   keywords:['大腸癌','大腸','直腸','糞便潛血','採便','大腸癌篩檢','癌症篩檢'],
    handler:'廖護理師',ext:'#223',
-   quickAnswer:'【大腸癌】45-74歲每2年1次糞便潛血（有大腸癌家族史者可放寬至40-44歲）。\n【口腔癌】30歲以上有嚼檳榔（含已戒）或吸菸者、18歲以上有嚼檳榔原住民，每2年1次，都免費。\n【肺癌LDCT】有肺癌家族史或重度吸菸史者，每2年1次低劑量電腦斷層。\n大腸癌篩檢直接到窗口領採便盒帶回家採檢；口腔癌及肺癌篩檢請至合約院所，服務時間週一到週五上班時間，洽分機223廖護理師。',
-   steps:['確認篩檢資格','至窗口領取採便盒（大腸癌）或填寫轉介單（口腔癌/肺癌）','完成篩檢後追蹤'],
+   quickAnswer:'糞便潛血檢查對象：\n• 45-74歲民眾：每2年1次\n• 40-44歲有大腸癌家族史者（父母、子女或兄弟姊妹曾罹患大腸癌）：每2年1次\n免費，請帶健保卡至窗口領採檢管帶回家採檢，再繳回採檢管，服務時間週一至週五，洽分機223廖護理師。',
+   steps:['確認篩檢資格：①45-74歲民眾 ②40-44歲有大腸癌家族史者（父母、子女或兄弟姊妹曾罹患大腸癌），每2年1次','填寫〔定量糞便潛血檢查表單〕','領取採檢管','採檢後繳回採檢管'],
    docs:['健保IC卡'],hours:'週一至週五 08:00–17:00',
-   fee:'免費（大腸癌：45–74歲每2年1次；口腔癌：30歲以上有嚼檳榔/吸菸者每2年1次；肺癌LDCT：有家族史或重度吸菸史者每2年1次）',
+   fee:'免費（每2年1次）',
+   forms:[{name:'臺中市癌症篩檢醫療院所名冊',desc:'大腸癌篩檢合約院所查詢',link:'https://www.health.taichung.gov.tw/26198/26327/26904/26932/1487424/post'}],
+   hospitals:[],note:'大腸癌家族史：父母、子女或兄弟姊妹曾罹患大腸癌者可提前至40歲申請'},
+
+  {id:'lung',name:'LDCT低劑量電腦斷層（肺癌）',badge:'badge-screen',badgeText:'篩檢',
+   keywords:['肺癌','LDCT','低劑量','電腦斷層','肺癌篩檢','吸菸','肺癌家族史','癌症篩檢'],
+   handler:'廖護理師',ext:'#223',
+   quickAnswer:'LDCT肺癌篩檢對象（每2年1次）：\n• 具肺癌家族史：45-74歲男性或40-74歲女性，且有血緣關係之父母、子女或兄弟姊妹經診斷為肺癌\n• 具重度吸菸史：50-74歲，吸菸史達20包-年以上，目前仍吸菸或戒菸未達15年\n（包-年＝每日吸菸包數×吸菸年數）\n請攜帶健保卡至臺中市合約醫院，建議先電話預約，洽分機223廖護理師。',
+   steps:['確認篩檢資格：①具肺癌家族史：45-74歲男性或40-74歲女性，父母/子女/兄弟姊妹曾確診肺癌 ②具重度吸菸史：50-74歲，吸菸史達20包-年以上，仍在吸菸或戒菸未達15年（包-年＝每日包數×吸菸年數），每2年1次','攜帶健保卡至臺中市合約醫院','接受LDCT低劑量電腦斷層掃描'],
+   docs:['健保IC卡'],hours:'依合約醫院門診時間',
+   fee:'免費（每2年1次）',
    forms:[
-     {name:'肺癌LDCT篩檢合約院所',desc:'有肺癌家族史或重度吸菸史者可申請低劑量電腦斷層篩檢，請查詢合約院所',link:'https://drive.google.com/file/d/1lAxI-cKBxJlO97M4A3k77S9qp5qGC6hs/view?usp=sharing'},
-     {name:'臺中市癌症篩檢醫療院所名冊',desc:'大腸癌、口腔癌、乳癌、子宮頸癌及肺癌各項篩檢合約院所查詢',link:'https://www.health.taichung.gov.tw/media/1418927/%E8%87%BA%E4%B8%AD%E5%B8%82%E7%99%8C%E7%97%87%E7%AF%A9%E6%AA%A2%E9%86%AB%E7%99%82%E9%99%A2%E6%89%80-0527.pdf'}
+     {name:'國健署肺癌早期偵測計畫－臺中市合約醫院名單',desc:'臺中市26家合約醫院，含太平區長安醫院、賢德醫院、國軍臺中總醫院，請先電話預約',link:'https://www.health.taichung.gov.tw/26198/26327/26904/26932/1487424/post'}
    ],
-   hospitals:[],note:'大腸癌家族史：父母、子女或兄弟姊妹曾患有大腸癌者可提前至40歲申請'},
+   hospitals:[
+     '長安醫院 03611-3611轉3648、3151（太平區永平路一段9號）',
+     '賢德醫院 2273-2551轉116（太平區宜昌路420號）',
+     '國軍臺中總醫院 2393-4191轉525333（太平區中山路二段348號）',
+     '中山醫學大學附設醫院 2473-9595轉20354、21767',
+     '澄清綜合醫院中港分院 2463-2000轉32106',
+     '台中榮民總醫院 2359-2525轉3249、3245',
+     '中國醫藥大學附設醫院 2233-4780',
+     '衛生福利部臺中醫院 2229-4411轉2169',
+     '佛教慈濟醫療財團法人台中慈濟醫院 3606-0666轉4089或4090',
+     '衛生福利部豐原醫院 2527-1180轉2630'
+   ],
+   note:'太平區合約醫院：長安醫院、賢德醫院、國軍臺中總醫院。完整26家合約醫院請點上方連結'},
 
   {id:'gastric',name:'胃癌防治・糞便抗原檢測胃幽門螺旋桿菌服務',badge:'badge-screen',badgeText:'篩檢',
    keywords:['胃癌','幽門螺旋桿菌','幽門桿菌','HP菌','胃幽門','糞便抗原','胃癌篩檢','胃癌防治','癌症篩檢'],
@@ -544,9 +641,10 @@ const DB=[
    steps:['來電申請行政相驗','由衛生所媒合指定醫療機構或安排衛生所醫師執行','取得死亡證明書'],
    docs:['身分證（往生者）','健保IC卡（往生者）'],
    hours:'平日來電申請；假日電話受理後上班日安排',
-   fee:'平日2,000-3,000元；假日3,000-5,000元（交通費另計）；低收/中低收免費',
+   fee:'【本所收費】1,000元（內含10份死亡證明書）；【其他醫療院所】依臺中市西醫醫療機構收費標準表；低收/中低收入戶免費',
    forms:[
      {name:'行政相驗說明（臺中市衛生局）',desc:'行政相驗申辦說明及相關規定',link:'https://www.health.taichung.gov.tw/26198/27035/26823/3029953'},
+     {name:'臺中市西醫醫療機構收費標準表',desc:'其他醫療院所行政相驗依此收費標準收費',link:'https://www.health.taichung.gov.tw/26198/26273/26285/1463475'},
      {name:'臺中市生命禮儀管理處－申請火化流程',desc:'申請火化排隊不須死亡證明書；死亡證明書於確定火化前一日備齊即可',link:'https://mortuary.taichung.gov.tw/Frontend/RowContent.aspx?id=1507'}
    ],
    hospitals:[],
@@ -664,6 +762,30 @@ function doMainSearch(){
   renderCards(matchItems(q),'main-results');
 }
 function quickMain(kw){document.getElementById('main-q').value=kw;doMainSearch();window.scrollTo({top:0,behavior:'smooth'});}
+function openStaffLogin(){
+  const m=document.getElementById('staff-login-modal');
+  m.style.display='flex';
+  document.getElementById('staff-pw-input').value='';
+  document.getElementById('staff-pw-err').textContent='';
+  setTimeout(()=>document.getElementById('staff-pw-input').focus(),100);
+}
+function closeStaffLogin(){
+  document.getElementById('staff-login-modal').style.display='none';
+}
+function checkStaffPw(){
+  const pw=document.getElementById('staff-pw-input').value;
+  if(pw==='Taiping8083'){
+    closeStaffLogin();
+    document.getElementById('staff-panel').style.display='block';
+    window.scrollTo({top:0,behavior:'smooth'});
+  } else {
+    document.getElementById('staff-pw-err').textContent='密碼錯誤，請再試一次';
+    document.getElementById('staff-pw-input').select();
+  }
+}
+function closeStaffPanel(){
+  document.getElementById('staff-panel').style.display='none';
+}
 function goHome(){
   document.getElementById('home-panel').style.display='';
   document.getElementById('results-panel').style.display='none';
