@@ -290,7 +290,7 @@ function closeImgZoom(){
 }
 
 // ===== 本月重要訊息留言板 =====
-const MSG_API_URL='請貼上你的Apps_Script網址'; // TODO: 部署後把網址貼在這裡
+const MSG_API_URL='https://script.google.com/macros/s/AKfycbweeSphPTburlrt9-VwjEbD__M5ARBe3cyVAr336L4Dr73m73mS7di_VZ5RKnFr4Fev-Q/exec';
 
 function defaultExpireDate(){
   const d=new Date();
@@ -646,7 +646,9 @@ const DB=[
    steps:['確認篩檢資格','填寫〔口腔黏膜檢查表〕','醫師提供口腔黏膜檢查'],
    docs:['健保IC卡'],hours:'週一至週五 08:30–11:30',
    fee:'免費',
-   forms:[{name:'臺中市癌症篩檢醫療院所名冊',desc:'口腔癌篩檢合約院所查詢',link:'https://www.health.taichung.gov.tw/26198/26327/26904/26932/1487424/post'}],
+   forms:[
+     {name:'口篩診所連結',desc:'口腔癌篩檢合約診所名冊',link:'https://docs.google.com/spreadsheets/d/15pMb_tgcDQWqCWcpMQ1KeZlFe029OXzL/edit?usp=drive_link&ouid=102102955538050539484&rtpof=true&sd=true'}
+   ],
    hospitals:[],note:'①30歲以上有嚼檳榔（含已戒）或吸菸習慣之民眾<br>②18-29歲有嚼檳榔（含已戒）習慣之原住民<br>以上皆為每2年1次'},
 
   {id:'colon',name:'糞便潛血檢查（大腸癌）',badge:'badge-screen',badgeText:'篩檢',
@@ -656,7 +658,7 @@ const DB=[
    steps:['確認篩檢資格','填寫〔定量糞便潛血檢查表單〕','領取採檢管','採檢後繳回採檢管'],
    docs:['健保IC卡'],hours:'週一至週五 08:00–17:00',
    fee:'免費',
-   forms:[{name:'臺中市癌症篩檢醫療院所名冊',desc:'大腸癌篩檢合約院所查詢',link:'https://www.health.taichung.gov.tw/26198/26327/26904/26932/1487424/post'}],
+   forms:[{name:'大腸癌篩檢診所連結',desc:'大腸癌篩檢合約診所名冊',link:'https://docs.google.com/spreadsheets/d/1JpnHq9uNF0LxsXQuUgPi-Kr_72sr6h0_/edit?usp=drive_link&ouid=102102955538050539484&rtpof=true&sd=true'}],
    hospitals:[],note:'①45-74歲民眾<br>②40-44歲有大腸癌家族史者（父母、子女或兄弟姊妹曾罹患大腸癌）<br>以上皆為每2年1次；家族史者可提前至40歲申請'},
 
   {id:'lung',name:'LDCT低劑量電腦斷層（肺癌）',badge:'badge-screen',badgeText:'篩檢',
@@ -681,7 +683,7 @@ const DB=[
      '佛教慈濟醫療財團法人台中慈濟醫院 3606-0666轉4089或4090',
      '衛生福利部豐原醫院 2527-1180轉2630'
    ],
-   note:'①具肺癌家族史：45-74歲男性或40-74歲女性，且有血緣關係之父母、子女或兄弟姊妹經診斷為肺癌<br>②具重度吸菸史：50-74歲，吸菸史達20包-年以上，目前仍吸菸或戒菸未達15年（包-年＝每日吸菸包數×吸菸年數）<br>以上皆為每2年1次<br><br>太平區合約醫院：長安醫院、賢德醫院、國軍臺中總醫院。完整26家合約醫院請點上方連結'},
+   note:'①具肺癌家族史：45-74歲男性或40-74歲女性，且有血緣關係之父母、子女或兄弟姊妹經診斷為肺癌<br>②具重度吸菸史：50-74歲，吸菸史達20包-年以上，目前仍吸菸或戒菸未達15年（包-年＝每日吸菸包數×吸菸年數）<br>以上皆為每2年1次<br><br>太平區合約醫院：長安醫院、賢德醫院、國軍臺中總醫院。完整26家合約醫院請點下方連結'},
 
   {id:'gastric',name:'胃癌防治・糞便抗原檢測胃幽門螺旋桿菌服務',badge:'badge-screen',badgeText:'篩檢',
    keywords:['胃癌','幽門螺旋桿菌','幽門桿菌','HP菌','胃幽門','糞便抗原','胃癌篩檢','胃癌防治','癌症篩檢'],
